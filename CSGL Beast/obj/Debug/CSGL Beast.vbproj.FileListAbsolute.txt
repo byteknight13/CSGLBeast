@@ -1,0 +1,14 @@
+c:\users\dstokes\documents\visual studio 2013\Projects\CSGL Beast\CSGL Beast\bin\Debug\CSGL Beast.exe
+c:\users\dstokes\documents\visual studio 2013\Projects\CSGL Beast\CSGL Beast\bin\Debug\CSGL Beast.pdb
+c:\users\dstokes\documents\visual studio 2013\Projects\CSGL Beast\CSGL Beast\obj\Debug\CSGL_Beast.Resources.resources
+c:\users\dstokes\documents\visual studio 2013\Projects\CSGL Beast\CSGL Beast\obj\Debug\CSGL Beast.vbproj.GenerateResource.Cache
+c:\users\dstokes\documents\visual studio 2013\Projects\CSGL Beast\CSGL Beast\obj\Debug\CSGL Beast.exe
+c:\users\dstokes\documents\visual studio 2013\Projects\CSGL Beast\CSGL Beast\obj\Debug\CSGL Beast.pdb
+c:\users\dstokes\documents\visual studio 2013\Projects\CSGL Beast\CSGL Beast\obj\Debug\CSGL_Beast.frmMain.resources
+c:\users\dstokes\documents\visual studio 2013\Projects\CSGL Beast\CSGL Beast\obj\Debug\CSGL Beast.exe.licenses
+C:\Users\dstokes\Documents\Visual Studio 2013\Projects\CSGL Beast\CSGL Beast\bin\Debug\dbCSGL.accdb
+C:\Users\dstokes\Documents\Visual Studio 2013\Projects\CSGL Beast\CSGL Beast\bin\Debug\CSGL Beast.exe.config
+C:\Users\dstokes\Documents\Visual Studio 2013\Projects\CSGL Beast\CSGL Beast\obj\Debug\CSGL_Beast.frmMatches.resources
+C:\Users\dstokes\Documents\Visual Studio 2013\Projects\CSGL Beast\CSGL Beast\obj\Debug\CSGL Beast.vbprojResolveAssemblyReference.cache
+C:\Users\dstokes\Documents\Visual Studio 2013\Projects\CSGL Beast\CSGL Beast\bin\Debug\Newtonsoft.Json.dll
+C:\Users\dstokes\Documents\Visual Studio 2013\Projects\CSGL Beast\CSGL Beast\bin\Debug\Newtonsoft.Json.xml
