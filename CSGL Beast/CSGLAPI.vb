@@ -155,7 +155,7 @@ Public Class CSGLAPI
         Dim regItems As New Regex("(?is-mnx:\d{9,10}_\d{1,9}.*?].*?})")
         Dim regName As New Regex(String.Format("{0}market_hash_name{0}:{0}.*?{0}", Chr(34)))
         Dim regDescription As New Regex(String.Format("{0}type{0}:{0}.*?{0}", Chr(34)))
-        Dim regCollection As New Regex(String.Format("{0}The .*? Collection{0}", Chr(34)))
+        Dim regCollection As New Regex(String.Format("{0}The .{1}3,30{2}? Collection{0}", Chr(34), "{", "}"))
         Dim colRegAll As MatchCollection
         Dim matchItemName As MatchCollection
         Dim matchDescription As MatchCollection
@@ -170,7 +170,7 @@ Public Class CSGLAPI
                 matchDescription = regDescription.Matches(listing.Value)
                 If matchDescription.Count <> 0 Then InventoryItems.Description = matchDescription.Item(0).Value.Replace("type", String.Empty).Replace(Chr(34), String.Empty).Replace(":", String.Empty).Replace("\u2122", "™")
                 matchCollection = regCollection.Matches(listing.Value)
-                If matchCollection.Count <> 0 Then InventoryItems.Collection = matchDescription.Item(0).Value.Replace(Chr(34), String.Empty)
+                If matchCollection.Count <> 0 Then InventoryItems.Collection = matchCollection.Item(0).Value.Replace(Chr(34), String.Empty)
                 Items.Add(InventoryItems)
             Next
             For Each item In Items
