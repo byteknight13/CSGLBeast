@@ -11,5 +11,19 @@
     Public Property worth As String
     Public Property betable As String
 
-
 End Class
+
+Public Class CSGLMyInventoryWrapper
+    Public Inventory As CSGLMyInventory
+End Class
+
+Public Class CSGLMyInventory
+    Public Property ID As String
+    Public Property ClassID As String
+    Public Property InstanceID As String
+    Public Property Amount As String
+    Public Property Pos As String
+End Class
+
+
+

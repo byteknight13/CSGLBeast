@@ -50,7 +50,4 @@ Public Class CustomEvents
 
 #End Region
 
-
-
-
 End Class

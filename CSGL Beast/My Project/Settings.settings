@@ -13,5 +13,8 @@
     <Setting Name="LastRefresh" Type="System.DateTime" Scope="User">
       <Value Profile="(Default)">06/24/2015 13:27:00</Value>
     </Setting>
+    <Setting Name="SteamProfileID" Type="System.String" Scope="User">
+      <Value Profile="(Default)">76561198208794152</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

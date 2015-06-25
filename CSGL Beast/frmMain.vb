@@ -1,7 +1,6 @@
 ﻿Imports System.ComponentModel
 Imports System.Text
 
-
 Partial Public Class frmMain
     Inherits DevExpress.XtraEditors.XtraForm
 
@@ -15,7 +14,6 @@ Partial Public Class frmMain
         InitializeComponent()
     End Sub
 
-
     Private Sub frmMain_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         LogMe("frmMain Loading...")
         frmMatches.TblMatchesTableAdapter1.Fill(dtMatches) 'Just for counting rows
@@ -27,6 +25,10 @@ Partial Public Class frmMain
     Private Sub tileViewAllMatches_ItemClick(sender As Object, e As DevExpress.XtraEditors.TileItemEventArgs) Handles tileViewAllMatches.ItemClick
         frmMatches.Show() 'Show frmMatches, and set frmMain (me) as the owner.
         frmMatches.WindowState = FormWindowState.Normal
-        'Me.WindowState = FormWindowState.Minimized 'Minimize the form when frmMatches is brought up.
+    End Sub
+
+    Private Sub tileViewAllItems_ItemClick(sender As Object, e As DevExpress.XtraEditors.TileItemEventArgs) Handles tileViewAllItems.ItemClick
+        frmItems.Show() 'Show frmItems, and set frmMain (me) as the owner.
+        frmItems.WindowState = FormWindowState.Normal
     End Sub
 End Class

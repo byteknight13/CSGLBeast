@@ -1,4 +1,5 @@
-﻿Public Class frmMatches 
+﻿Imports System.Threading
+Public Class frmMatches
 
     Sub New()
 
@@ -16,14 +17,20 @@
         CSGLItem.name = "ty"
     End Sub
 
-   
-
     Private Sub frmMatches_Disposed(sender As Object, e As EventArgs) Handles Me.Disposed
         frmMain.WindowState = FormWindowState.Normal
+    End Sub
+
+    Private Sub frmMatches_FormClosing(sender As Object, e As FormClosingEventArgs) Handles Me.FormClosing
+        TblMatchesTableAdapter1.Update(DbCSGLDataSet1)
     End Sub
 
     Private Sub frmMatches_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         Me.WindowState = FormWindowState.Normal
         frmMain.WindowState = FormWindowState.Minimized
+    End Sub
+
+    Private Sub BarButtonItem2_ItemClick(sender As Object, e As DevExpress.XtraBars.ItemClickEventArgs) Handles BarButtonItem2.ItemClick
+        
     End Sub
 End Class

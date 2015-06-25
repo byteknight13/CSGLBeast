@@ -74,6 +74,18 @@ Partial Friend NotInheritable Class Settings
             Me("LastRefresh") = value
         End Set
     End Property
+    
+    <Global.System.Configuration.UserScopedSettingAttribute(),  _
+     Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+     Global.System.Configuration.DefaultSettingValueAttribute("76561198208794152")>  _
+    Public Property SteamProfileID() As String
+        Get
+            Return CType(Me("SteamProfileID"),String)
+        End Get
+        Set
+            Me("SteamProfileID") = value
+        End Set
+    End Property
 End Class
 
 Namespace My
