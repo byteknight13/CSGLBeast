@@ -1,7 +1,4 @@
-﻿Imports System.Net
-Imports Newtonsoft.Json
-Imports Newtonsoft.Json.Linq
-Imports System.Web.Script.Serialization
+﻿Imports Newtonsoft.Json
 Imports System.Text.RegularExpressions
 
 Public Class CSGLAPI
@@ -46,7 +43,6 @@ Public Class CSGLAPI
         End Try
     End Function
 
-
     Public Function GetWeaponList(ByVal url As String) As DataTable
         Try
             Dim web As System.Net.WebClient = New System.Net.WebClient()
@@ -87,45 +83,108 @@ Public Class CSGLAPI
         Return dt
     End Function
 
+    ''' <summary>
+    ''' Gets inventory for specified user.
+    ''' </summary>
+    ''' <returns>DataTable with ID and Class IDs</returns>
+    Public Shared Function GetMyInventoryOLD() As DataTable
+        Try
+            Dim ClassID As New List(Of String)
+            Dim InstanceID As New List(Of String)
+            Dim ID As New List(Of String)
+            Dim web As System.Net.WebClient = New System.Net.WebClient
+            LogMe(String.Format("Requesting JSON from: {0}", urlSteamInventory))
+            Dim jsonString As String = web.DownloadString(urlSteamInventory)
+            Dim match As MatchCollection
+            LogMe(String.Format("ClassIDs: {0} | IDs: {1}", String.Format("{0}id{0}:{0}\d{1}9{2}{0}", Chr(34), Chr(123), Chr(125)), String.Format("{0}id{0}:{0}\d{1}10{2}{0}", Chr(34), Chr(123), Chr(125))))
+            match = (New Regex(String.Format("{0}classid{0}:{0}\d{1}9{2}{0}", Chr(34), Chr(123), Chr(125)))).Matches(jsonString) 'ClassIDs
+            If match.Count <> 0 Then
+                LogMe("Adding Class IDs to list...")
+                For Each sClassID As Match In match
+                    ClassID.Add(sClassID.Value.Replace(Chr(34), String.Empty).Replace(":", String.Empty).Replace("classid", String.Empty).Trim)
+                Next
+
+                match = (New Regex(String.Format("{0}instanceid{0}:{0}(0|\d{1}9{2})", Chr(34), Chr(123), Chr(125)) & Chr(34))).Matches(jsonString) 'Instance IDs
+                If match.Count <> 0 Then
+                    For Each sInstanceID As Match In match
+                        InstanceID.Add(sInstanceID.Value.Replace(Chr(34), String.Empty).Replace(":", String.Empty).Replace("instanceid", String.Empty).Trim)
+                    Next
+
+                    match = (New Regex(String.Format("{0}id{0}:{0}\d{1}10{2}{0}", Chr(34), Chr(123), Chr(125)))).Matches(jsonString) 'IDs
+                    If match.Count <> 0 Then
+                        LogMe("Adding IDs to list...")
+                        For Each sID As Match In match
+                            ID.Add(sID.Value.Replace(Chr(34), String.Empty).Replace(":", String.Empty).Replace("id", String.Empty).Trim)
+                        Next
+
+                        Dim dt As New DataTable
+                        LogMe("Created new DT. Adding ows...")
+                        With dt
+                            .Columns.Add("ID")
+                            .Columns.Add("Class ID")
+                            .Columns.Add("Instance ID")
+                        End With
+                        For i = 0 To ID.Count - 1
+                            With dt
+                                .Rows.Add({ID(i), ClassID(i), InstanceID(i)})
+                            End With
+                        Next
+                        LogMe("Rows added... Returning DT.")
+                        Return dt
+                    End If
+                End If
+            End If
+        Catch ex As Exception
+            LogMe(ex.Message)
+            Return Nothing
+        End Try
+        Return Nothing
+    End Function
+
     Public Shared Function GetMyInventory() As DataTable
-        'Try
-        Dim ClassID As New List(Of String)
-        Dim ID As New List(Of String)
+        Dim retDT As New DataTable
+        With retDT
+            .Columns.Add("Name")
+            .Columns.Add("Description")
+            .Columns.Add("Collection")
+        End With
+        Dim Items As New List(Of InventoryItems)
         Dim web As System.Net.WebClient = New System.Net.WebClient
         LogMe(String.Format("Requesting JSON from: {0}", urlSteamInventory))
         Dim jsonString As String = web.DownloadString(urlSteamInventory)
-        Dim regClassIDs As New Regex(String.Format("{0}classid{0}:{0}\d{1}9{2}{0}", Chr(34), Chr(123), Chr(125)))
-        Dim regIDs As New Regex(String.Format("{0}id{0}:{0}\d{1}10{2}{0}", Chr(34), Chr(123), Chr(125)))
-        LogMe(String.Format("ClassIDs: {0} | IDs: {1}", String.Format("{0}id{0}:{0}\d{1}9{2}{0}", Chr(34), Chr(123), Chr(125)), String.Format("{0}id{0}:{0}\d{1}10{2}{0}", Chr(34), Chr(123), Chr(125))))
-        Dim match As MatchCollection = regClassIDs.Matches(jsonString)
-        If match.Count <> 0 Then
-            LogMe("Adding Class IDs to list...")
-            For Each sClassID As Match In match
-                ClassID.Add(sClassID.Value)
+        Dim regItems As New Regex("(?is-mnx:\d{9,10}_\d{1,9}.*?].*?})")
+        Dim regName As New Regex(String.Format("{0}market_hash_name{0}:{0}.*?{0}", Chr(34)))
+        Dim regDescription As New Regex(String.Format("{0}type{0}:{0}.*?{0}", Chr(34)))
+        Dim regCollection As New Regex(String.Format("{0}The .*? Collection{0}", Chr(34)))
+        Dim colRegAll As MatchCollection
+        Dim matchItemName As MatchCollection
+        Dim matchDescription As MatchCollection
+        Dim matchCollection As MatchCollection
+
+        colRegAll = regItems.Matches(jsonString)
+        If colRegAll.Count <> 0 Then
+            For Each listing As Match In colRegAll
+                Dim InventoryItems As New InventoryItems
+                matchItemName = regName.Matches(listing.Value)
+                If matchItemName.Count <> 0 Then InventoryItems.Name = matchItemName.Item(0).Value.Replace("market_hash_name", String.Empty).Replace(Chr(34), String.Empty).Replace(":", String.Empty).Replace("\u2122", "™")
+                matchDescription = regDescription.Matches(listing.Value)
+                If matchDescription.Count <> 0 Then InventoryItems.Description = matchDescription.Item(0).Value.Replace("type", String.Empty).Replace(Chr(34), String.Empty).Replace(":", String.Empty).Replace("\u2122", "™")
+                matchCollection = regCollection.Matches(listing.Value)
+                If matchCollection.Count <> 0 Then InventoryItems.Collection = matchDescription.Item(0).Value.Replace(Chr(34), String.Empty)
+                Items.Add(InventoryItems)
             Next
-            match = regIDs.Matches(jsonString)
-            If match.Count <> 0 Then
-                LogMe("Adding IDs to list...")
-                For Each sID As Match In match
-                    ID.Add(sID.Value)
-                Next
-                Dim dt As New DataTable
-                LogMe("Created new DT. Adding ows...")
-                With dt
-                    .Columns.Add("ID")
-                    .Columns.Add("ClassID")
-                End With
-                For i = 0 To ID.Count - 1
-                    With dt
-                        .Rows.Add({ID(i).Replace(Chr(34), String.Empty).Replace(":", String.Empty).Replace("id", String.Empty), ClassID(i).Replace(Chr(34), String.Empty).Replace(":", String.Empty).Replace("classid", String.Empty)})
-                    End With
-                Next
-                LogMe("Rows added... Returning DT.")
-                Return dt
-            End If
+            For Each item In Items
+                retDT.Rows.Add({item.Name, item.Description, item.Collection})
+            Next
+            Return retDT
         End If
-        'Catch ex As Exception
-        '    LogMe(ex.Message)
-        'End Try
+        Return Nothing
     End Function
+
+End Class
+
+Public Class InventoryItems
+    Public Property Name As String
+    Public Property Description As String
+    Public Property Collection As String
 End Class
