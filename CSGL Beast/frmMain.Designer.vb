@@ -22,6 +22,8 @@
     ''' the contents of this method with the code editor.
     ''' </summary>
     Private Sub InitializeComponent()
+        Me.components = New System.ComponentModel.Container()
+        Dim SplashScreenManager1 As DevExpress.XtraSplashScreen.SplashScreenManager = New DevExpress.XtraSplashScreen.SplashScreenManager(Me, GetType(Global.CSGL_Beast.frmSplash), True, True)
         Dim TileItemElement1 As DevExpress.XtraEditors.TileItemElement = New DevExpress.XtraEditors.TileItemElement()
         Dim TileItemElement2 As DevExpress.XtraEditors.TileItemElement = New DevExpress.XtraEditors.TileItemElement()
         Dim TileItemElement3 As DevExpress.XtraEditors.TileItemElement = New DevExpress.XtraEditors.TileItemElement()
@@ -38,7 +40,11 @@
         Dim TileItemElement14 As DevExpress.XtraEditors.TileItemElement = New DevExpress.XtraEditors.TileItemElement()
         Dim TileItemElement15 As DevExpress.XtraEditors.TileItemElement = New DevExpress.XtraEditors.TileItemElement()
         Dim TileItemElement16 As DevExpress.XtraEditors.TileItemElement = New DevExpress.XtraEditors.TileItemElement()
-        Me.DefaultLookAndFeel1 = New DevExpress.LookAndFeel.DefaultLookAndFeel()
+        Dim TileItemElement17 As DevExpress.XtraEditors.TileItemElement = New DevExpress.XtraEditors.TileItemElement()
+        Dim TileItemElement18 As DevExpress.XtraEditors.TileItemElement = New DevExpress.XtraEditors.TileItemElement()
+        Dim TileItemElement19 As DevExpress.XtraEditors.TileItemElement = New DevExpress.XtraEditors.TileItemElement()
+        Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(frmMain))
+        Me.DefaultLookAndFeel1 = New DevExpress.LookAndFeel.DefaultLookAndFeel(Me.components)
         Me.TileControl1 = New DevExpress.XtraEditors.TileControl()
         Me.TileGroup2 = New DevExpress.XtraEditors.TileGroup()
         Me.tileViewAllMatches = New DevExpress.XtraEditors.TileItem()
@@ -48,12 +54,12 @@
         Me.TileGroup4 = New DevExpress.XtraEditors.TileGroup()
         Me.tileLastRefresh = New DevExpress.XtraEditors.TileItem()
         Me.tileTotalMatches = New DevExpress.XtraEditors.TileItem()
+        Me.tileSettings = New DevExpress.XtraEditors.TileItem()
         Me.SuspendLayout()
         '
         'DefaultLookAndFeel1
         '
-        Me.DefaultLookAndFeel1.LookAndFeel.SkinName = "Metropolis"
-        Me.DefaultLookAndFeel1.LookAndFeel.TouchUIMode = DevExpress.LookAndFeel.TouchUIMode.[False]
+        Me.DefaultLookAndFeel1.LookAndFeel.SkinName = "Whiteprint"
         '
         'TileControl1
         '
@@ -77,11 +83,11 @@
         Me.TileControl1.Groups.Add(Me.TileGroup4)
         Me.TileControl1.Location = New System.Drawing.Point(0, 0)
         Me.TileControl1.LookAndFeel.SkinName = "Metropolis"
-        Me.TileControl1.MaxId = 14
+        Me.TileControl1.MaxId = 15
         Me.TileControl1.Name = "TileControl1"
         Me.TileControl1.ShowGroupText = True
         Me.TileControl1.ShowText = True
-        Me.TileControl1.Size = New System.Drawing.Size(913, 404)
+        Me.TileControl1.Size = New System.Drawing.Size(906, 530)
         Me.TileControl1.TabIndex = 0
         Me.TileControl1.Text = "Dashboard"
         '
@@ -262,6 +268,7 @@
         '
         Me.TileGroup4.Items.Add(Me.tileLastRefresh)
         Me.TileGroup4.Items.Add(Me.tileTotalMatches)
+        Me.TileGroup4.Items.Add(Me.tileSettings)
         Me.TileGroup4.Name = "TileGroup4"
         Me.TileGroup4.Text = "CSGL Beast Status"
         '
@@ -371,10 +378,62 @@
         Me.tileTotalMatches.ItemSize = DevExpress.XtraEditors.TileItemSize.Wide
         Me.tileTotalMatches.Name = "tileTotalMatches"
         '
+        'tileSettings
+        '
+        TileItemElement17.Appearance.Hovered.Font = New System.Drawing.Font("Segoe UI Light", 17.0!)
+        TileItemElement17.Appearance.Hovered.Options.UseFont = True
+        TileItemElement17.Appearance.Hovered.Options.UseTextOptions = True
+        TileItemElement17.Appearance.Hovered.TextOptions.Trimming = DevExpress.Utils.Trimming.EllipsisCharacter
+        TileItemElement17.Appearance.Hovered.TextOptions.WordWrap = DevExpress.Utils.WordWrap.NoWrap
+        TileItemElement17.Appearance.Normal.Font = New System.Drawing.Font("Segoe UI Light", 17.0!)
+        TileItemElement17.Appearance.Normal.Options.UseFont = True
+        TileItemElement17.Appearance.Normal.Options.UseTextOptions = True
+        TileItemElement17.Appearance.Normal.TextOptions.Trimming = DevExpress.Utils.Trimming.EllipsisCharacter
+        TileItemElement17.Appearance.Normal.TextOptions.WordWrap = DevExpress.Utils.WordWrap.NoWrap
+        TileItemElement17.Appearance.Selected.Font = New System.Drawing.Font("Segoe UI Light", 17.0!)
+        TileItemElement17.Appearance.Selected.Options.UseFont = True
+        TileItemElement17.Appearance.Selected.Options.UseTextOptions = True
+        TileItemElement17.Appearance.Selected.TextOptions.Trimming = DevExpress.Utils.Trimming.EllipsisCharacter
+        TileItemElement17.Appearance.Selected.TextOptions.WordWrap = DevExpress.Utils.WordWrap.NoWrap
+        TileItemElement17.MaxWidth = 160
+        TileItemElement17.Text = "Settings"
+        TileItemElement17.TextAlignment = DevExpress.XtraEditors.TileItemContentAlignment.Manual
+        TileItemElement17.TextLocation = New System.Drawing.Point(75, 0)
+        TileItemElement18.Appearance.Hovered.Font = New System.Drawing.Font("Segoe UI", 9.0!)
+        TileItemElement18.Appearance.Hovered.Options.UseFont = True
+        TileItemElement18.Appearance.Hovered.Options.UseTextOptions = True
+        TileItemElement18.Appearance.Hovered.TextOptions.Trimming = DevExpress.Utils.Trimming.EllipsisCharacter
+        TileItemElement18.Appearance.Hovered.TextOptions.WordWrap = DevExpress.Utils.WordWrap.Wrap
+        TileItemElement18.Appearance.Normal.Font = New System.Drawing.Font("Segoe UI", 9.0!)
+        TileItemElement18.Appearance.Normal.Options.UseFont = True
+        TileItemElement18.Appearance.Normal.Options.UseTextOptions = True
+        TileItemElement18.Appearance.Normal.TextOptions.Trimming = DevExpress.Utils.Trimming.EllipsisCharacter
+        TileItemElement18.Appearance.Normal.TextOptions.WordWrap = DevExpress.Utils.WordWrap.Wrap
+        TileItemElement18.Appearance.Selected.Font = New System.Drawing.Font("Segoe UI", 9.0!)
+        TileItemElement18.Appearance.Selected.Options.UseFont = True
+        TileItemElement18.Appearance.Selected.Options.UseTextOptions = True
+        TileItemElement18.Appearance.Selected.TextOptions.Trimming = DevExpress.Utils.Trimming.EllipsisCharacter
+        TileItemElement18.Appearance.Selected.TextOptions.WordWrap = DevExpress.Utils.WordWrap.Wrap
+        TileItemElement18.MaxWidth = 160
+        TileItemElement18.Text = "Click here to change your application settings."
+        TileItemElement18.TextAlignment = DevExpress.XtraEditors.TileItemContentAlignment.Manual
+        TileItemElement18.TextLocation = New System.Drawing.Point(85, 32)
+        TileItemElement19.Image = CType(resources.GetObject("TileItemElement19.Image"), System.Drawing.Image)
+        TileItemElement19.ImageAlignment = DevExpress.XtraEditors.TileItemContentAlignment.Manual
+        TileItemElement19.ImageLocation = New System.Drawing.Point(4, 8)
+        TileItemElement19.ImageScaleMode = DevExpress.XtraEditors.TileItemImageScaleMode.ZoomOutside
+        TileItemElement19.ImageSize = New System.Drawing.Size(64, 64)
+        Me.tileSettings.Elements.Add(TileItemElement17)
+        Me.tileSettings.Elements.Add(TileItemElement18)
+        Me.tileSettings.Elements.Add(TileItemElement19)
+        Me.tileSettings.Id = 14
+        Me.tileSettings.ItemSize = DevExpress.XtraEditors.TileItemSize.Wide
+        Me.tileSettings.Name = "tileSettings"
+        '
         'frmMain
         '
         Me.ActiveGlowColor = System.Drawing.Color.WhiteSmoke
-        Me.ClientSize = New System.Drawing.Size(913, 404)
+        Me.ClientSize = New System.Drawing.Size(906, 530)
         Me.Controls.Add(Me.TileControl1)
         Me.FormBorderEffect = DevExpress.XtraEditors.FormBorderEffect.Glow
         Me.InactiveGlowColor = System.Drawing.Color.WhiteSmoke
@@ -396,6 +455,7 @@
     Friend WithEvents TileGroup4 As DevExpress.XtraEditors.TileGroup
     Friend WithEvents tileLastRefresh As DevExpress.XtraEditors.TileItem
     Friend WithEvents tileTotalMatches As DevExpress.XtraEditors.TileItem
+    Friend WithEvents tileSettings As DevExpress.XtraEditors.TileItem
 
 #End Region
 

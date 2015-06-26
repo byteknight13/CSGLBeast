@@ -15,6 +15,32 @@
     <OptionCompare>Binary</OptionCompare>
     <OptionStrict>Off</OptionStrict>
     <OptionInfer>On</OptionInfer>
+    <IsWebBootstrapper>false</IsWebBootstrapper>
+    <PrimaryVersionType>AssemblyVersionAttribute</PrimaryVersionType>
+    <UpdateAssemblyVersion>True</UpdateAssemblyVersion>
+    <UpdateAssemblyFileVersion>True</UpdateAssemblyFileVersion>
+    <UpdateAssemblyInfoVersion>True</UpdateAssemblyInfoVersion>
+    <AssemblyVersionSettings>None.IncrementOnDemandWithReset.Increment.None</AssemblyVersionSettings>
+    <AssemblyFileVersionSettings>None.IncrementOnDemandWithReset.Increment.None</AssemblyFileVersionSettings>
+    <AssemblyInfoVersionSettings>None.IncrementOnDemandWithReset.Increment.None</AssemblyInfoVersionSettings>
+    <AssemblyVersion>0.6.0</AssemblyVersion>
+    <AssemblyInfoFilePath>
+    </AssemblyInfoFilePath>
+    <PublishUrl>U:\DStokes Releases\CSGLBeast\</PublishUrl>
+    <Install>true</Install>
+    <InstallFrom>Disk</InstallFrom>
+    <UpdateEnabled>false</UpdateEnabled>
+    <UpdateMode>Foreground</UpdateMode>
+    <UpdateInterval>7</UpdateInterval>
+    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
+    <UpdatePeriodically>false</UpdatePeriodically>
+    <UpdateRequired>false</UpdateRequired>
+    <MapFileExtensions>true</MapFileExtensions>
+    <ApplicationRevision>1</ApplicationRevision>
+    <ApplicationVersion>1.0.0.1</ApplicationVersion>
+    <UseApplicationTrust>false</UseApplicationTrust>
+    <PublishWizardCompleted>true</PublishWizardCompleted>
+    <BootstrapperEnabled>true</BootstrapperEnabled>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -40,6 +66,24 @@
   </PropertyGroup>
   <PropertyGroup>
     <StartupObject>CSGL_Beast.My.MyApplication</StartupObject>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ManifestCertificateThumbprint>D99E9A6AFF9A61AB9536FDDF920C6A1C63F0BE6A</ManifestCertificateThumbprint>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ManifestKeyFile>CSGL Beast_TemporaryKey.pfx</ManifestKeyFile>
+  </PropertyGroup>
+  <PropertyGroup>
+    <GenerateManifests>true</GenerateManifests>
+  </PropertyGroup>
+  <PropertyGroup>
+    <TargetZone>LocalIntranet</TargetZone>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationManifest>My Project\app.manifest</ApplicationManifest>
+  </PropertyGroup>
+  <PropertyGroup>
+    <SignManifests>true</SignManifests>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="DevExpress.BonusSkins.v14.1">
@@ -165,6 +209,18 @@
     <Compile Include="frmMatches.vb">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="frmSettings.Designer.vb">
+      <DependentUpon>frmSettings.vb</DependentUpon>
+    </Compile>
+    <Compile Include="frmSettings.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmSplash.Designer.vb">
+      <DependentUpon>frmSplash.vb</DependentUpon>
+    </Compile>
+    <Compile Include="frmSplash.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="frmWait.Designer.vb">
       <DependentUpon>frmWait.vb</DependentUpon>
     </Compile>
@@ -173,6 +229,10 @@
     </Compile>
     <Compile Include="modMyFunctions.vb" />
     <Compile Include="My Project\Application.Designer.vb">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Application.myapp</DependentUpon>
+    </Compile>
+    <Compile Include="My Project\Application2.Designer.vb">
       <AutoGen>True</AutoGen>
       <DependentUpon>Application.myapp</DependentUpon>
     </Compile>
@@ -189,6 +249,12 @@
     <EmbeddedResource Include="frmMatches.resx">
       <DependentUpon>frmMatches.vb</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="frmSettings.resx">
+      <DependentUpon>frmSettings.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmSplash.resx">
+      <DependentUpon>frmSplash.vb</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="frmWait.resx">
       <DependentUpon>frmWait.vb</DependentUpon>
     </EmbeddedResource>
@@ -204,7 +270,10 @@
       <DependentUpon>Resources.resx</DependentUpon>
       <DesignTime>True</DesignTime>
     </Compile>
-    <None Include="app.config" />
+    <None Include="app.config">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="CSGL Beast_TemporaryKey.pfx" />
     <None Include="dbCSGLDataSet.xsc">
       <DependentUpon>dbCSGLDataSet.xsd</DependentUpon>
     </None>
@@ -216,8 +285,9 @@
     <None Include="dbCSGLDataSet.xss">
       <DependentUpon>dbCSGLDataSet.xsd</DependentUpon>
     </None>
+    <None Include="My Project\app.manifest" />
     <None Include="My Project\Settings.settings">
-      <Generator>SettingsSingleFileGenerator</Generator>
+      <Generator>PublicSettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.vb</LastGenOutput>
     </None>
     <Compile Include="My Project\Settings.Designer.vb">
@@ -229,6 +299,7 @@
   <ItemGroup>
     <None Include="My Project\Application.myapp">
       <Generator>MyApplicationCodeGenerator</Generator>
+      <LastGenOutput>Application2.Designer.vb</LastGenOutput>
     </None>
   </ItemGroup>
   <ItemGroup>
@@ -261,6 +332,24 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="dbCSGL.accdb" />
+    <None Include="Resources\Puzzle.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <BootstrapperPackage Include=".NETFramework,Version=v4.5.1">
+      <Visible>False</Visible>
+      <ProductName>Microsoft .NET Framework 4.5.1 %28x86 and x64%29</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1 Client Profile</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.VisualBasic.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it.

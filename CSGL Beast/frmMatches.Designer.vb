@@ -19,9 +19,10 @@ Partial Class frmMatches
     'Do not modify it using the code editor.
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
+        Me.components = New System.ComponentModel.Container()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(frmMatches))
         Me.GridControl1 = New DevExpress.XtraGrid.GridControl()
-        Me.BindingSource1 = New System.Windows.Forms.BindingSource()
+        Me.BindingSource1 = New System.Windows.Forms.BindingSource(Me.components)
         Me.DbCSGLDataSet1 = New CSGL_Beast.dbCSGLDataSet()
         Me.gviewMatches = New DevExpress.XtraGrid.Views.Grid.GridView()
         Me.colMatchID = New DevExpress.XtraGrid.Columns.GridColumn()
@@ -34,7 +35,7 @@ Partial Class frmMatches
         Me.colBestOf = New DevExpress.XtraGrid.Columns.GridColumn()
         Me.LayoutView1 = New DevExpress.XtraGrid.Views.Layout.LayoutView()
         Me.TblMatchesTableAdapter1 = New CSGL_Beast.dbCSGLDataSetTableAdapters.tblMatchesTableAdapter()
-        Me.BarManager1 = New DevExpress.XtraBars.BarManager()
+        Me.BarManager1 = New DevExpress.XtraBars.BarManager(Me.components)
         Me.Bar1 = New DevExpress.XtraBars.Bar()
         Me.BarHeaderItem1 = New DevExpress.XtraBars.BarHeaderItem()
         Me.LoogUpTeamOne = New DevExpress.XtraBars.BarEditItem()
@@ -65,7 +66,7 @@ Partial Class frmMatches
         Me.BarSubItem3 = New DevExpress.XtraBars.BarSubItem()
         Me.mnuCheckAutoFilter = New DevExpress.XtraBars.BarCheckItem()
         Me.bgWorkerRefreshMatches = New System.ComponentModel.BackgroundWorker()
-        Me.tmrBgWorker = New System.Windows.Forms.Timer()
+        Me.tmrBgWorker = New System.Windows.Forms.Timer(Me.components)
         CType(Me.GridControl1, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.BindingSource1, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.DbCSGLDataSet1, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -84,10 +85,10 @@ Partial Class frmMatches
         Me.GridControl1.Cursor = System.Windows.Forms.Cursors.Default
         Me.GridControl1.DataSource = Me.BindingSource1
         Me.GridControl1.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.GridControl1.Location = New System.Drawing.Point(0, 57)
+        Me.GridControl1.Location = New System.Drawing.Point(0, 60)
         Me.GridControl1.MainView = Me.gviewMatches
         Me.GridControl1.Name = "GridControl1"
-        Me.GridControl1.Size = New System.Drawing.Size(948, 410)
+        Me.GridControl1.Size = New System.Drawing.Size(948, 406)
         Me.GridControl1.TabIndex = 0
         Me.GridControl1.ViewCollection.AddRange(New DevExpress.XtraGrid.Views.Base.BaseView() {Me.gviewMatches, Me.LayoutView1})
         '
@@ -377,28 +378,28 @@ Partial Class frmMatches
         Me.barDockControlTop.CausesValidation = False
         Me.barDockControlTop.Dock = System.Windows.Forms.DockStyle.Top
         Me.barDockControlTop.Location = New System.Drawing.Point(0, 0)
-        Me.barDockControlTop.Size = New System.Drawing.Size(948, 57)
+        Me.barDockControlTop.Size = New System.Drawing.Size(948, 60)
         '
         'barDockControlBottom
         '
         Me.barDockControlBottom.CausesValidation = False
         Me.barDockControlBottom.Dock = System.Windows.Forms.DockStyle.Bottom
-        Me.barDockControlBottom.Location = New System.Drawing.Point(0, 467)
-        Me.barDockControlBottom.Size = New System.Drawing.Size(948, 22)
+        Me.barDockControlBottom.Location = New System.Drawing.Point(0, 466)
+        Me.barDockControlBottom.Size = New System.Drawing.Size(948, 23)
         '
         'barDockControlLeft
         '
         Me.barDockControlLeft.CausesValidation = False
         Me.barDockControlLeft.Dock = System.Windows.Forms.DockStyle.Left
-        Me.barDockControlLeft.Location = New System.Drawing.Point(0, 57)
-        Me.barDockControlLeft.Size = New System.Drawing.Size(0, 410)
+        Me.barDockControlLeft.Location = New System.Drawing.Point(0, 60)
+        Me.barDockControlLeft.Size = New System.Drawing.Size(0, 406)
         '
         'barDockControlRight
         '
         Me.barDockControlRight.CausesValidation = False
         Me.barDockControlRight.Dock = System.Windows.Forms.DockStyle.Right
-        Me.barDockControlRight.Location = New System.Drawing.Point(948, 57)
-        Me.barDockControlRight.Size = New System.Drawing.Size(0, 410)
+        Me.barDockControlRight.Location = New System.Drawing.Point(948, 60)
+        Me.barDockControlRight.Size = New System.Drawing.Size(0, 406)
         '
         'BarButtonItem2
         '

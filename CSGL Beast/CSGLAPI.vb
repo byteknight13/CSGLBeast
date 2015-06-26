@@ -15,10 +15,11 @@ Public Class CSGLAPI
     ''' <param name="url">The URL of the API.</param>
     ''' <param name="local">Is the data local?</param>
     ''' <returns></returns>
+    ''' 
     Public Function JSONToDataTable(ByVal url As String, ByVal local As Boolean) As DataTable
         Try
             Dim web As System.Net.WebClient = New System.Net.WebClient()
-            If Not local Then 'If local is NOT selected
+            If Not local Then 'If local is NOT selecteds
                 Dim src As String = web.DownloadString(url).ToString
                 src = src.Replace(String.Format("{0}c{0}", Chr(34)), String.Format("{0}NONE{0}", Chr(34)))
                 src = src.Replace(String.Format("{0}match{0}", Chr(34)), String.Format("{0}Match ID{0}", Chr(34)))
@@ -201,10 +202,23 @@ Public Class CSGLAPI
         Next
     End Sub
 
+    Public Sub SetUserSkin()
+        Dim skinname As String = My.Settings.UserSkin
+        LogMe(String.Format("UserSkin = {0}. Setting Skin...", skinname))
+        For Each skin As DevExpress.Skins.SkinContainer In DevExpress.Skins.SkinManager.Default.Skins
+            If skin.SkinName = skinname Then
+                frmMain.DefaultLookAndFeel1.LookAndFeel.SetSkinStyle(skinname)
+                LogMe("Skin set!")
+                Exit For
+            End If
+        Next
+    End Sub
 End Class
 
 Public Class InventoryItems
     Public Property Name As String
     Public Property Description As String
     Public Property Collection As String
+    Public Property Image As String
 End Class
+

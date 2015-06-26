@@ -16,7 +16,7 @@ Option Explicit On
 <Global.System.Runtime.CompilerServices.CompilerGeneratedAttribute(),  _
  Global.System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.Editors.SettingsDesigner.SettingsSingleFileGenerator", "12.0.0.0"),  _
  Global.System.ComponentModel.EditorBrowsableAttribute(Global.System.ComponentModel.EditorBrowsableState.Advanced)>  _
-Partial Friend NotInheritable Class Settings
+Partial Public NotInheritable Class Settings
     Inherits Global.System.Configuration.ApplicationSettingsBase
     
     Private Shared defaultInstance As Settings = CType(Global.System.Configuration.ApplicationSettingsBase.Synchronized(New Settings()),Settings)
@@ -85,6 +85,18 @@ Partial Friend NotInheritable Class Settings
         Get
             Return CType(Me("dbCSGLConnectionString"),String)
         End Get
+    End Property
+    
+    <Global.System.Configuration.UserScopedSettingAttribute(),  _
+     Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+     Global.System.Configuration.DefaultSettingValueAttribute("")>  _
+    Public Property UserSkin() As String
+        Get
+            Return CType(Me("UserSkin"),String)
+        End Get
+        Set
+            Me("UserSkin") = value
+        End Set
     End Property
 End Class
 

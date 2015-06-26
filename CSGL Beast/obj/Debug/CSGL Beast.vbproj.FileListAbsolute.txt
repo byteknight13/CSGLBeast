@@ -93,3 +93,11 @@ C:\Users\dstokes\Documents\Visual Studio 2013\Projects\CSGL Beast\CSGL Beast\bin
 C:\Users\dstokes\Documents\Visual Studio 2013\Projects\CSGL Beast\CSGL Beast\bin\Debug\ru\DevExpress.XtraPrinting.v14.1.resources.dll
 C:\Users\dstokes\Documents\Visual Studio 2013\Projects\CSGL Beast\CSGL Beast\obj\Debug\CSGL_Beast.frmItems.resources
 C:\Users\dstokes\Documents\Visual Studio 2013\Projects\CSGL Beast\CSGL Beast\obj\Debug\CSGL_Beast.frmItemsMyInventory.resources
+C:\Users\dstokes\documents\visual studio 2013\Projects\CSGL Beast\CSGL Beast\bin\Debug\CSGL Beast.exe.manifest
+C:\Users\dstokes\documents\visual studio 2013\Projects\CSGL Beast\CSGL Beast\bin\Debug\CSGL Beast.application
+C:\Users\dstokes\documents\visual studio 2013\Projects\CSGL Beast\CSGL Beast\obj\Debug\CSGL_Beast.frmSplash.resources
+C:\Users\dstokes\documents\visual studio 2013\Projects\CSGL Beast\CSGL Beast\obj\Debug\CSGL Beast.TrustInfo.xml
+C:\Users\dstokes\documents\visual studio 2013\Projects\CSGL Beast\CSGL Beast\obj\Debug\CSGL Beast.exe.manifest
+C:\Users\dstokes\documents\visual studio 2013\Projects\CSGL Beast\CSGL Beast\obj\Debug\CSGL Beast.application
+C:\Users\dstokes\documents\visual studio 2013\Projects\CSGL Beast\CSGL Beast\obj\Debug\CSGL_Beast.frmSettings.resources
+C:\Users\dstokes\documents\visual studio 2013\Projects\CSGL Beast\CSGL Beast\bin\Debug\app.config
