@@ -53,7 +53,7 @@ Partial Class frmMatches
         Me.Bar2 = New DevExpress.XtraBars.Bar()
         Me.BarSubItem4 = New DevExpress.XtraBars.BarSubItem()
         Me.mnuCheckShowFind = New DevExpress.XtraBars.BarCheckItem()
-        Me.mnuCheckAutoFilter = New DevExpress.XtraBars.BarCheckItem()
+        Me.mnuRefreshMatches = New DevExpress.XtraBars.BarButtonItem()
         Me.Bar3 = New DevExpress.XtraBars.Bar()
         Me.barDockControlTop = New DevExpress.XtraBars.BarDockControl()
         Me.barDockControlBottom = New DevExpress.XtraBars.BarDockControl()
@@ -63,6 +63,9 @@ Partial Class frmMatches
         Me.mnuDateRange = New DevExpress.XtraBars.BarEditItem()
         Me.RepositoryItemDateEdit1 = New DevExpress.XtraEditors.Repository.RepositoryItemDateEdit()
         Me.BarSubItem3 = New DevExpress.XtraBars.BarSubItem()
+        Me.mnuCheckAutoFilter = New DevExpress.XtraBars.BarCheckItem()
+        Me.bgWorkerRefreshMatches = New System.ComponentModel.BackgroundWorker()
+        Me.tmrBgWorker = New System.Windows.Forms.Timer()
         CType(Me.GridControl1, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.BindingSource1, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.DbCSGLDataSet1, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -143,6 +146,8 @@ Partial Class frmMatches
         '
         'colMatchDate
         '
+        Me.colMatchDate.DisplayFormat.FormatString = "g"
+        Me.colMatchDate.DisplayFormat.FormatType = DevExpress.Utils.FormatType.DateTime
         Me.colMatchDate.FieldName = "MatchDate"
         Me.colMatchDate.Name = "colMatchDate"
         Me.colMatchDate.OptionsColumn.AllowEdit = False
@@ -214,9 +219,9 @@ Partial Class frmMatches
         Me.BarManager1.DockControls.Add(Me.barDockControlLeft)
         Me.BarManager1.DockControls.Add(Me.barDockControlRight)
         Me.BarManager1.Form = Me
-        Me.BarManager1.Items.AddRange(New DevExpress.XtraBars.BarItem() {Me.BarButtonItem1, Me.BarButtonItem2, Me.LoogUpTeamOne, Me.LookUpTeamTwo, Me.BarHeaderItem1, Me.mnuClearFilter, Me.BarSubItem1, Me.mnuFilterBest1, Me.mnuFilterBest2, Me.mnuFilterBest3, Me.BarSubItem2, Me.d, Me.mnuDateRange, Me.BarSubItem3, Me.BarLargeButtonItem1, Me.BarSubItem4, Me.mnuCheckShowFind, Me.mnuCheckAutoFilter})
+        Me.BarManager1.Items.AddRange(New DevExpress.XtraBars.BarItem() {Me.BarButtonItem1, Me.BarButtonItem2, Me.LoogUpTeamOne, Me.LookUpTeamTwo, Me.BarHeaderItem1, Me.mnuClearFilter, Me.BarSubItem1, Me.mnuFilterBest1, Me.mnuFilterBest2, Me.mnuFilterBest3, Me.BarSubItem2, Me.d, Me.mnuDateRange, Me.BarSubItem3, Me.BarLargeButtonItem1, Me.BarSubItem4, Me.mnuCheckShowFind, Me.mnuCheckAutoFilter, Me.mnuRefreshMatches})
         Me.BarManager1.MainMenu = Me.Bar2
-        Me.BarManager1.MaxItemId = 19
+        Me.BarManager1.MaxItemId = 20
         Me.BarManager1.RepositoryItems.AddRange(New DevExpress.XtraEditors.Repository.RepositoryItem() {Me.reposTeamOne, Me.reposTeamTwo, Me.RepositoryItemDateEdit1})
         Me.BarManager1.StatusBar = Me.Bar3
         '
@@ -331,7 +336,7 @@ Partial Class frmMatches
         Me.Bar2.DockCol = 0
         Me.Bar2.DockRow = 0
         Me.Bar2.DockStyle = DevExpress.XtraBars.BarDockStyle.Top
-        Me.Bar2.LinksPersistInfo.AddRange(New DevExpress.XtraBars.LinkPersistInfo() {New DevExpress.XtraBars.LinkPersistInfo(Me.BarSubItem4)})
+        Me.Bar2.LinksPersistInfo.AddRange(New DevExpress.XtraBars.LinkPersistInfo() {New DevExpress.XtraBars.LinkPersistInfo(Me.BarSubItem4), New DevExpress.XtraBars.LinkPersistInfo(Me.mnuRefreshMatches)})
         Me.Bar2.OptionsBar.MultiLine = True
         Me.Bar2.OptionsBar.UseWholeRow = True
         Me.Bar2.Text = "Main menu"
@@ -349,11 +354,11 @@ Partial Class frmMatches
         Me.mnuCheckShowFind.Id = 17
         Me.mnuCheckShowFind.Name = "mnuCheckShowFind"
         '
-        'mnuCheckAutoFilter
+        'mnuRefreshMatches
         '
-        Me.mnuCheckAutoFilter.Caption = "Show Auto Filter Row"
-        Me.mnuCheckAutoFilter.Id = 18
-        Me.mnuCheckAutoFilter.Name = "mnuCheckAutoFilter"
+        Me.mnuRefreshMatches.Caption = "Refresh Matches"
+        Me.mnuRefreshMatches.Id = 19
+        Me.mnuRefreshMatches.Name = "mnuRefreshMatches"
         '
         'Bar3
         '
@@ -422,6 +427,20 @@ Partial Class frmMatches
         Me.BarSubItem3.Id = 14
         Me.BarSubItem3.LinksPersistInfo.AddRange(New DevExpress.XtraBars.LinkPersistInfo() {New DevExpress.XtraBars.LinkPersistInfo(Me.mnuDateRange)})
         Me.BarSubItem3.Name = "BarSubItem3"
+        '
+        'mnuCheckAutoFilter
+        '
+        Me.mnuCheckAutoFilter.Caption = "Show Auto Filter Row"
+        Me.mnuCheckAutoFilter.Id = 18
+        Me.mnuCheckAutoFilter.Name = "mnuCheckAutoFilter"
+        '
+        'bgWorkerRefreshMatches
+        '
+        Me.bgWorkerRefreshMatches.WorkerReportsProgress = True
+        Me.bgWorkerRefreshMatches.WorkerSupportsCancellation = True
+        '
+        'tmrBgWorker
+        '
         '
         'frmMatches
         '
@@ -493,4 +512,7 @@ Partial Class frmMatches
     Friend WithEvents BarSubItem4 As DevExpress.XtraBars.BarSubItem
     Friend WithEvents mnuCheckShowFind As DevExpress.XtraBars.BarCheckItem
     Friend WithEvents mnuCheckAutoFilter As DevExpress.XtraBars.BarCheckItem
+    Friend WithEvents mnuRefreshMatches As DevExpress.XtraBars.BarButtonItem
+    Friend WithEvents bgWorkerRefreshMatches As System.ComponentModel.BackgroundWorker
+    Friend WithEvents tmrBgWorker As System.Windows.Forms.Timer
 End Class

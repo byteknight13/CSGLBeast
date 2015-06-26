@@ -2,7 +2,8 @@
 Imports DevExpress.XtraGrid.Columns
 Imports System.Threading
 Public Class frmMatches
-
+    Public threadDatatable As DataTable
+    Public threadRowList As New List(Of DataRow)
     Sub New()
 
         InitializeComponent()
@@ -97,4 +98,95 @@ Public Class frmMatches
     End Sub
 
 
+    Private Sub bgWorkerRefreshMatches_DoWork(sender As Object, e As System.ComponentModel.DoWorkEventArgs) Handles bgWorkerRefreshMatches.DoWork
+        Dim CSGLAPI As New CSGLAPI
+        Dim dt As New DataTable
+        threadDatatable = CSGLAPI.JSONToDataTable(CSGLAPI.urlMatchList, False)
+        If threadDatatable IsNot Nothing Then
+            For Each row As DataRow In threadDatatable.Rows
+                threadRowList.Add(row)
+            Next
+            Dim listofIDs As New List(Of String)
+            For i = 0 To gviewMatches.RowCount - 1
+                listofIDs.Add(gviewMatches.GetRowCellValue(i, gviewMatches.Columns("MatchID")).ToString)
+            Next
+            listofIDs = listofIDs.Distinct.ToList
+            LogMe(String.Format("Current ID count: {0}", listofIDs.Count))
+            For Each row As DataRow In threadRowList
+                Dim id As Integer = listofIDs.IndexOf(row.Item(0).ToString)
+                If id >= 0 Then
+                    Continue For
+                Else
+                    'LogMe(String.Format("Found new match! - Match ID: {0}", row.Item(0)))
+                    AddNewRow()
+                    gviewMatches.SelectRow(gviewMatches.RowCount - 1)
+                    Dim newRowHandle As Integer = gviewMatches.GetSelectedRows(0)
+                    LogMe(String.Format("{0} is the new row handle.", newRowHandle.ToString))
+                    Dim newRow As Object = gviewMatches.GetRow(newRowHandle)
+                    For i = 0 To gviewMatches.Columns.Count - 1
+                        'SetRowCellValue(newRowHandle, i, "YOMOMMA")
+                        SetRowCellValue(newRowHandle, i, row.Item(i).ToString)
+                        If gviewMatches.GetRowCellValue(i, "Winner").ToString = "Team 1" Then SetRowCellValue(i, 4, gviewMatches.GetRowCellValue(i, "Team1").ToString)
+                        If gviewMatches.GetRowCellValue(i, "Winner").ToString = "Team 2" Then SetRowCellValue(i, 4, gviewMatches.GetRowCellValue(i, "Team2").ToString)
+                    Next
+                End If
+            Next
+            My.Settings.LastRefresh = Date.Now
+        ElseIf threadDatatable Is Nothing Then
+            LogMe("threadDatatable = NOTHING")
+        End If
+    End Sub
+
+    Private Sub bgWorkerRefreshMatches_RunWorkerCompleted(sender As Object, e As System.ComponentModel.RunWorkerCompletedEventArgs) Handles bgWorkerRefreshMatches.RunWorkerCompleted
+        LogMe("Worker is DONE.")
+    End Sub
+
+    Private Sub tmrBgWorker_Tick(sender As Object, e As EventArgs) Handles tmrBgWorker.Tick
+        If bgWorkerRefreshMatches.IsBusy Then
+            gviewMatches.ShowLoadingPanel()
+        ElseIf bgWorkerRefreshMatches.IsBusy = False Then
+            gviewMatches.HideLoadingPanel()
+            tmrBgWorker.Enabled = False
+        End If
+    End Sub
+
+    Private Sub mnuRefreshMatches_ItemClick(sender As Object, e As DevExpress.XtraBars.ItemClickEventArgs) Handles mnuRefreshMatches.ItemClick
+        tmrBgWorker.Enabled = True
+        bgWorkerRefreshMatches.RunWorkerAsync()
+    End Sub
+
+
+    Private Delegate Function AddNewRowDelegate() As Integer
+    Private Function AddNewRow() As Integer
+        If Me.InvokeRequired Then
+            Me.Invoke(New AddNewRowDelegate(AddressOf AddNewRow))
+        Else
+            gviewMatches.AddNewRow()
+            Return gviewMatches.FocusedRowHandle
+        End If
+    End Function
+
+    Private Delegate Sub SetRowCellValueDelegate(ByVal rowhandle As Integer, ByVal col As Integer, ByVal theVal As String)
+    Private Sub SetRowCellValue(ByVal rowhandle As Integer, ByVal col As Integer, ByVal theVal As String)
+        If Me.InvokeRequired Then
+            Dim del As New SetRowCellValueDelegate(AddressOf SetRowCellValue)
+            Me.Invoke(del, New Object() {rowhandle, col, theVal})
+        Else
+            Dim newRowHandle As Integer = gviewMatches.FocusedRowHandle
+            Dim newRow As Object = gviewMatches.GetRow(newRowHandle)
+            gviewMatches.SetRowCellValue(rowhandle, gviewMatches.Columns(col), theVal)
+        End If
+    End Sub
+
+    Public Sub InvalidRowExceptionHandler(ByVal sender As Object, ByVal e As DevExpress.XtraGrid.Views.Base.InvalidRowExceptionEventArgs) Handles gviewMatches.InvalidRowException
+        'e.ExceptionMode = DevExpress.XtraEditors.Controls.ExceptionMode.Ignore
+        LogMe(e.Exception.Data.ToString)
+    End Sub
+
+
+
+   
+    Private Sub gviewMatches_ValidateRow(sender As Object, e As ValidateRowEventArgs) Handles gviewMatches.ValidateRow
+        e.Valid = True
+    End Sub
 End Class

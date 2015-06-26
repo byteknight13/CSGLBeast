@@ -2,12 +2,12 @@
 Imports System.Text.RegularExpressions
 
 Public Class CSGLAPI
-    Public Shared CSGOAppID As String = "730"
-    Public Shared filepathMatches As String = Application.StartupPath & "\data\matches.csg"
-    Public Shared SteamProfileID As String = My.Settings.SteamProfileID
-    Public Shared urlItemList As String = "http://csgolounge.com/api/schema.php"
-    Public Shared urlMatchList As String = "http://csgolounge.com/api/matches.php"
-    Public Shared urlSteamInventory As String = String.Format("http://steamcommunity.com/profiles/{0}/inventory/json/{1}/2", SteamProfileID, CSGOAppID)
+    Public CSGOAppID As String = "730"
+    Public filepathMatches As String = Application.StartupPath & "\data\matches.csg"
+    Public SteamProfileID As String = My.Settings.SteamProfileID
+    Public urlItemList As String = "http://csgolounge.com/api/schema.php"
+    Public urlMatchList As String = "http://csgolounge.com/api/matches.php"
+    Public urlSteamInventory As String = String.Format("http://steamcommunity.com/profiles/{0}/inventory/json/{1}/2", SteamProfileID, CSGOAppID)
 
     ''' <summary>
     ''' JSON to data table.
@@ -15,11 +15,22 @@ Public Class CSGLAPI
     ''' <param name="url">The URL of the API.</param>
     ''' <param name="local">Is the data local?</param>
     ''' <returns></returns>
-    Public Shared Function JSONToDataTable(ByVal url As String, ByVal local As Boolean) As DataTable
+    Public Function JSONToDataTable(ByVal url As String, ByVal local As Boolean) As DataTable
         Try
             Dim web As System.Net.WebClient = New System.Net.WebClient()
             If Not local Then 'If local is NOT selected
                 Dim src As String = web.DownloadString(url).ToString
+                src = src.Replace(String.Format("{0}c{0}", Chr(34)), String.Format("{0}NONE{0}", Chr(34)))
+                src = src.Replace(String.Format("{0}match{0}", Chr(34)), String.Format("{0}Match ID{0}", Chr(34)))
+                src = src.Replace(String.Format("{0}when{0}", Chr(34)), String.Format("{0}Match Date{0}", Chr(34)))
+                src = src.Replace(String.Format("{0}a{0}", Chr(34)), String.Format("{0}Team 1{0}", Chr(34)))
+                src = src.Replace(String.Format("{0}b{0}", Chr(34)), String.Format("{0}Team 2{0}", Chr(34)))
+                src = src.Replace(String.Format("{0}format{0}", Chr(34)), String.Format("{0}Best Of{0}", Chr(34)))
+                src = src.Replace(String.Format("{0}event{0}", Chr(34)), String.Format("{0}Event{0}", Chr(34)))
+                'src = src.Replace(String.Format("{0}closed{0}", Chr(34)), String.Format("{0}Closed{0}", Chr(34)))
+                src = src.Replace(String.Format("{0}winner{0}", Chr(34)), String.Format("{0}Winner{0}", Chr(34)))
+                src = src.Replace(String.Format("{0}closed{0}:{0}1{0}", Chr(34)), String.Format("{0}closed{0}:{0}TRUE{0}", Chr(34)))
+                src = src.Replace(String.Format("{0}closed{0}:{0}0{0}", Chr(34)), String.Format("{0}closed{0}:{0}FALSE{0}", Chr(34)))
                 Dim dtValue As DataTable = DirectCast(JsonConvert.DeserializeObject(src.Trim, (GetType(DataTable))), DataTable)
                 If dtValue.Rows.Count <> 0 Then LogMe("DT Contains Data. Returning dtValue as DataTable.")
                 Return dtValue
@@ -87,7 +98,7 @@ Public Class CSGLAPI
     ''' Gets inventory for specified user.
     ''' </summary>
     ''' <returns>DataTable with ID and Class IDs</returns>
-    Public Shared Function GetMyInventoryOLD() As DataTable
+    Public Function GetMyInventoryOLD() As DataTable
         Try
             Dim ClassID As New List(Of String)
             Dim InstanceID As New List(Of String)
@@ -141,7 +152,7 @@ Public Class CSGLAPI
         Return Nothing
     End Function
 
-    Public Shared Function GetMyInventory() As DataTable
+    Public Function GetMyInventory() As DataTable
         Dim retDT As New DataTable
         With retDT
             .Columns.Add("Name")
@@ -180,6 +191,15 @@ Public Class CSGLAPI
         End If
         Return Nothing
     End Function
+
+    Public Sub FormatGridViewCells()
+        For i = 0 To frmMatches.gviewMatches.DataRowCount - 1
+            If frmMatches.gviewMatches.GetRowCellValue(i, "Winner").ToString = "Team 1" Then frmMatches.gviewMatches.SetRowCellValue(i, "Winner", frmMatches.gviewMatches.GetRowCellValue(i, "Team 1"))
+            If frmMatches.gviewMatches.GetRowCellValue(i, "Winner").ToString = "Team 2" Then frmMatches.gviewMatches.SetRowCellValue(i, "Winner", frmMatches.gviewMatches.GetRowCellValue(i, "Team 2"))
+            If frmMatches.gviewMatches.GetRowCellValue(i, "Closed").ToString = "1" Then frmMatches.gviewMatches.SetRowCellValue(i, "Closed", "YES")
+            If frmMatches.gviewMatches.GetRowCellValue(i, "Closed").ToString = "0" Then frmMatches.gviewMatches.SetRowCellValue(i, "Closed", "NO")
+        Next
+    End Sub
 
 End Class
 
