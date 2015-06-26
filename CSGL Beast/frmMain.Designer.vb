@@ -22,7 +22,6 @@
     ''' the contents of this method with the code editor.
     ''' </summary>
     Private Sub InitializeComponent()
-        Me.components = New System.ComponentModel.Container()
         Dim TileItemElement1 As DevExpress.XtraEditors.TileItemElement = New DevExpress.XtraEditors.TileItemElement()
         Dim TileItemElement2 As DevExpress.XtraEditors.TileItemElement = New DevExpress.XtraEditors.TileItemElement()
         Dim TileItemElement3 As DevExpress.XtraEditors.TileItemElement = New DevExpress.XtraEditors.TileItemElement()
@@ -39,7 +38,7 @@
         Dim TileItemElement14 As DevExpress.XtraEditors.TileItemElement = New DevExpress.XtraEditors.TileItemElement()
         Dim TileItemElement15 As DevExpress.XtraEditors.TileItemElement = New DevExpress.XtraEditors.TileItemElement()
         Dim TileItemElement16 As DevExpress.XtraEditors.TileItemElement = New DevExpress.XtraEditors.TileItemElement()
-        Me.DefaultLookAndFeel1 = New DevExpress.LookAndFeel.DefaultLookAndFeel(Me.components)
+        Me.DefaultLookAndFeel1 = New DevExpress.LookAndFeel.DefaultLookAndFeel()
         Me.TileControl1 = New DevExpress.XtraEditors.TileControl()
         Me.TileGroup2 = New DevExpress.XtraEditors.TileGroup()
         Me.tileViewAllMatches = New DevExpress.XtraEditors.TileItem()
@@ -58,6 +57,8 @@
         '
         'TileControl1
         '
+        Me.TileControl1.AllowDrag = False
+        Me.TileControl1.AllowDragTilesBetweenGroups = False
         Me.TileControl1.AllowItemHover = True
         Me.TileControl1.AppearanceItem.Normal.BackColor = System.Drawing.Color.White
         Me.TileControl1.AppearanceItem.Normal.BackColor2 = System.Drawing.Color.WhiteSmoke

@@ -53,16 +53,6 @@ Partial Friend NotInheritable Class Settings
         End Get
     End Property
     
-    <Global.System.Configuration.ApplicationScopedSettingAttribute(),  _
-     Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-     Global.System.Configuration.SpecialSettingAttribute(Global.System.Configuration.SpecialSetting.ConnectionString),  _
-     Global.System.Configuration.DefaultSettingValueAttribute("Provider=Microsoft.ACE.OLEDB.12.0;Data Source=|DataDirectory|\dbCSGL.accdb")>  _
-    Public ReadOnly Property dbCSGLConnectionString() As String
-        Get
-            Return CType(Me("dbCSGLConnectionString"),String)
-        End Get
-    End Property
-    
     <Global.System.Configuration.UserScopedSettingAttribute(),  _
      Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
      Global.System.Configuration.DefaultSettingValueAttribute("06/24/2015 13:27:00")>  _
@@ -85,6 +75,16 @@ Partial Friend NotInheritable Class Settings
         Set
             Me("SteamProfileID") = value
         End Set
+    End Property
+    
+    <Global.System.Configuration.ApplicationScopedSettingAttribute(),  _
+     Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+     Global.System.Configuration.SpecialSettingAttribute(Global.System.Configuration.SpecialSetting.ConnectionString),  _
+     Global.System.Configuration.DefaultSettingValueAttribute("Provider=Microsoft.ACE.OLEDB.12.0;Data Source=|DataDirectory|\dbCSGL.accdb")>  _
+    Public ReadOnly Property dbCSGLConnectionString() As String
+        Get
+            Return CType(Me("dbCSGLConnectionString"),String)
+        End Get
     End Property
 End Class
 
