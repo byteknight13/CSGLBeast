@@ -15,6 +15,7 @@
         For Each skin As DevExpress.Skins.SkinContainer In DevExpress.Skins.SkinManager.Default.Skins
             lstSkinNames.Items.Add(skin.SkinName)
         Next
+        lstSkinNames.SortOrder = SortOrder.Ascending
         lstSkinNames.SelectedIndex = Nothing
     End Sub
 
@@ -24,9 +25,10 @@
         LogMe(String.Format("The user select skin {0} hs been saved.", My.Settings.UserSkin))
     End Sub
 
-    Private Sub lstSkinNames_SelectedIndexChanged_1(sender As Object, e As EventArgs) Handles lstSkinNames.SelectedIndexChanged
-        If lstSkinNames.SelectedIndex >= 0 AndAlso Not (lstSkinNames.SelectedIndex = Nothing) Then
-            frmMain.DefaultLookAndFeel1.LookAndFeel.SetSkinStyle(lstSkinNames.Items(lstSkinNames.SelectedIndex).ToString)
-        End If
+    Private Sub lstSkinNames_Click(sender As Object, e As EventArgs) Handles lstSkinNames.Click
+        'If lstSkinNames.SelectedIndex >= 0 AndAlso Not (lstSkinNames.SelectedIndex = Nothing) Then
+        frmMain.DefaultLookAndFeel1.LookAndFeel.SetSkinStyle(lstSkinNames.SelectedItem.ToString)
+        'End If
     End Sub
+
 End Class

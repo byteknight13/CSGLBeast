@@ -53,9 +53,9 @@ Partial Public Class frmMain
         'Dim elementname = DevExpress.Skins.CommonSkins.SkinButton
         Dim c2r, c2g, c2b As Integer
         Dim intChangeBy As Integer = 30
-        c2r = c2.R - intChangeBy
-        c2g = c2.G - intChangeBy
-        c2b = c2.B - intChangeBy
+        c2r = Math.Max(c2.R - intChangeBy, 0)
+        c2g = Math.Max(c2.G - intChangeBy, 0)
+        c2b = Math.Max(c2.B - intChangeBy, 0)
         c2 = System.Drawing.Color.FromArgb(255, c2r, c2g, c2b)
         TileControl1.AppearanceItem.Normal.BackColor = c1
         TileControl1.AppearanceItem.Normal.BackColor2 = c2
