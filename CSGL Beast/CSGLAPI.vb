@@ -208,6 +208,7 @@ Public Class CSGLAPI
         For Each skin As DevExpress.Skins.SkinContainer In DevExpress.Skins.SkinManager.Default.Skins
             If skin.SkinName = skinname Then
                 frmMain.DefaultLookAndFeel1.LookAndFeel.SetSkinStyle(skinname)
+                frmMain.SetTileColors()
                 LogMe("Skin set!")
                 Exit For
             End If

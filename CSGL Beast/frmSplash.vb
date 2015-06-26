@@ -18,11 +18,11 @@ Public Class frmSplash
 
     Public Overrides Sub ProcessCommand(ByVal cmd As System.Enum, ByVal arg As Object)
         MyBase.ProcessCommand(cmd, arg)
-        Dim command As SplashScreenCommand = CType(cmd, SplashScreenCommand)
-        If command = SplashScreenCommand.SetSkin Then
-            LogMe("Setting Skins")
-            SetSkin()
-        End If
+        'Dim command As SplashScreenCommand = CType(cmd, SplashScreenCommand)
+        'If command = SplashScreenCommand.SetSkin Then
+        '    LogMe("Setting Skins")
+        '    SetSkin()
+        'End If
     End Sub
 
     Public Sub SetSkin()
