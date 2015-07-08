@@ -19,10 +19,9 @@ Partial Class frmMatches
     'Do not modify it using the code editor.
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
-        Me.components = New System.ComponentModel.Container()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(frmMatches))
         Me.GridControl1 = New DevExpress.XtraGrid.GridControl()
-        Me.BindingSource1 = New System.Windows.Forms.BindingSource(Me.components)
+        Me.BindingSource1 = New System.Windows.Forms.BindingSource()
         Me.DbCSGLDataSet1 = New CSGL_Beast.dbCSGLDataSet()
         Me.gviewMatches = New DevExpress.XtraGrid.Views.Grid.GridView()
         Me.colMatchID = New DevExpress.XtraGrid.Columns.GridColumn()
@@ -35,7 +34,7 @@ Partial Class frmMatches
         Me.colBestOf = New DevExpress.XtraGrid.Columns.GridColumn()
         Me.LayoutView1 = New DevExpress.XtraGrid.Views.Layout.LayoutView()
         Me.TblMatchesTableAdapter1 = New CSGL_Beast.dbCSGLDataSetTableAdapters.tblMatchesTableAdapter()
-        Me.BarManager1 = New DevExpress.XtraBars.BarManager(Me.components)
+        Me.BarManager1 = New DevExpress.XtraBars.BarManager()
         Me.Bar1 = New DevExpress.XtraBars.Bar()
         Me.BarHeaderItem1 = New DevExpress.XtraBars.BarHeaderItem()
         Me.LoogUpTeamOne = New DevExpress.XtraBars.BarEditItem()
@@ -51,6 +50,7 @@ Partial Class frmMatches
         Me.mnuFilterBest3 = New DevExpress.XtraBars.BarCheckItem()
         Me.d = New DevExpress.XtraBars.BarSubItem()
         Me.BarLargeButtonItem1 = New DevExpress.XtraBars.BarLargeButtonItem()
+        Me.BarButtonItem3 = New DevExpress.XtraBars.BarButtonItem()
         Me.Bar2 = New DevExpress.XtraBars.Bar()
         Me.BarSubItem4 = New DevExpress.XtraBars.BarSubItem()
         Me.mnuCheckShowFind = New DevExpress.XtraBars.BarCheckItem()
@@ -66,7 +66,7 @@ Partial Class frmMatches
         Me.BarSubItem3 = New DevExpress.XtraBars.BarSubItem()
         Me.mnuCheckAutoFilter = New DevExpress.XtraBars.BarCheckItem()
         Me.bgWorkerRefreshMatches = New System.ComponentModel.BackgroundWorker()
-        Me.tmrBgWorker = New System.Windows.Forms.Timer(Me.components)
+        Me.tmrBgWorker = New System.Windows.Forms.Timer()
         CType(Me.GridControl1, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.BindingSource1, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.DbCSGLDataSet1, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -220,9 +220,9 @@ Partial Class frmMatches
         Me.BarManager1.DockControls.Add(Me.barDockControlLeft)
         Me.BarManager1.DockControls.Add(Me.barDockControlRight)
         Me.BarManager1.Form = Me
-        Me.BarManager1.Items.AddRange(New DevExpress.XtraBars.BarItem() {Me.BarButtonItem1, Me.BarButtonItem2, Me.LoogUpTeamOne, Me.LookUpTeamTwo, Me.BarHeaderItem1, Me.mnuClearFilter, Me.BarSubItem1, Me.mnuFilterBest1, Me.mnuFilterBest2, Me.mnuFilterBest3, Me.BarSubItem2, Me.d, Me.mnuDateRange, Me.BarSubItem3, Me.BarLargeButtonItem1, Me.BarSubItem4, Me.mnuCheckShowFind, Me.mnuCheckAutoFilter, Me.mnuRefreshMatches})
+        Me.BarManager1.Items.AddRange(New DevExpress.XtraBars.BarItem() {Me.BarButtonItem1, Me.BarButtonItem2, Me.LoogUpTeamOne, Me.LookUpTeamTwo, Me.BarHeaderItem1, Me.mnuClearFilter, Me.BarSubItem1, Me.mnuFilterBest1, Me.mnuFilterBest2, Me.mnuFilterBest3, Me.BarSubItem2, Me.d, Me.mnuDateRange, Me.BarSubItem3, Me.BarLargeButtonItem1, Me.BarSubItem4, Me.mnuCheckShowFind, Me.mnuCheckAutoFilter, Me.mnuRefreshMatches, Me.BarButtonItem3})
         Me.BarManager1.MainMenu = Me.Bar2
-        Me.BarManager1.MaxItemId = 20
+        Me.BarManager1.MaxItemId = 21
         Me.BarManager1.RepositoryItems.AddRange(New DevExpress.XtraEditors.Repository.RepositoryItem() {Me.reposTeamOne, Me.reposTeamTwo, Me.RepositoryItemDateEdit1})
         Me.BarManager1.StatusBar = Me.Bar3
         '
@@ -232,7 +232,7 @@ Partial Class frmMatches
         Me.Bar1.DockCol = 0
         Me.Bar1.DockRow = 1
         Me.Bar1.DockStyle = DevExpress.XtraBars.BarDockStyle.Top
-        Me.Bar1.LinksPersistInfo.AddRange(New DevExpress.XtraBars.LinkPersistInfo() {New DevExpress.XtraBars.LinkPersistInfo(Me.BarHeaderItem1), New DevExpress.XtraBars.LinkPersistInfo(DevExpress.XtraBars.BarLinkUserDefines.PaintStyle, Me.LoogUpTeamOne, DevExpress.XtraBars.BarItemPaintStyle.CaptionGlyph), New DevExpress.XtraBars.LinkPersistInfo(DevExpress.XtraBars.BarLinkUserDefines.PaintStyle, Me.LookUpTeamTwo, DevExpress.XtraBars.BarItemPaintStyle.CaptionGlyph), New DevExpress.XtraBars.LinkPersistInfo(DevExpress.XtraBars.BarLinkUserDefines.PaintStyle, Me.BarButtonItem1, "", True, True, True, 0, Nothing, DevExpress.XtraBars.BarItemPaintStyle.CaptionGlyph), New DevExpress.XtraBars.LinkPersistInfo(DevExpress.XtraBars.BarLinkUserDefines.PaintStyle, Me.mnuClearFilter, DevExpress.XtraBars.BarItemPaintStyle.CaptionGlyph), New DevExpress.XtraBars.LinkPersistInfo(DevExpress.XtraBars.BarLinkUserDefines.PaintStyle, Me.BarSubItem1, DevExpress.XtraBars.BarItemPaintStyle.CaptionGlyph)})
+        Me.Bar1.LinksPersistInfo.AddRange(New DevExpress.XtraBars.LinkPersistInfo() {New DevExpress.XtraBars.LinkPersistInfo(Me.BarHeaderItem1), New DevExpress.XtraBars.LinkPersistInfo(DevExpress.XtraBars.BarLinkUserDefines.PaintStyle, Me.LoogUpTeamOne, DevExpress.XtraBars.BarItemPaintStyle.CaptionGlyph), New DevExpress.XtraBars.LinkPersistInfo(DevExpress.XtraBars.BarLinkUserDefines.PaintStyle, Me.LookUpTeamTwo, DevExpress.XtraBars.BarItemPaintStyle.CaptionGlyph), New DevExpress.XtraBars.LinkPersistInfo(DevExpress.XtraBars.BarLinkUserDefines.PaintStyle, Me.BarButtonItem1, "", True, True, True, 0, Nothing, DevExpress.XtraBars.BarItemPaintStyle.CaptionGlyph), New DevExpress.XtraBars.LinkPersistInfo(DevExpress.XtraBars.BarLinkUserDefines.PaintStyle, Me.mnuClearFilter, DevExpress.XtraBars.BarItemPaintStyle.CaptionGlyph), New DevExpress.XtraBars.LinkPersistInfo(DevExpress.XtraBars.BarLinkUserDefines.PaintStyle, Me.BarSubItem1, DevExpress.XtraBars.BarItemPaintStyle.CaptionGlyph), New DevExpress.XtraBars.LinkPersistInfo(Me.BarButtonItem3)})
         Me.Bar1.Text = "Tools"
         '
         'BarHeaderItem1
@@ -330,6 +330,12 @@ Partial Class frmMatches
         Me.BarLargeButtonItem1.Caption = "Show Date Filters"
         Me.BarLargeButtonItem1.Id = 15
         Me.BarLargeButtonItem1.Name = "BarLargeButtonItem1"
+        '
+        'BarButtonItem3
+        '
+        Me.BarButtonItem3.Caption = "BarButtonItem3"
+        Me.BarButtonItem3.Id = 20
+        Me.BarButtonItem3.Name = "BarButtonItem3"
         '
         'Bar2
         '
@@ -516,4 +522,5 @@ Partial Class frmMatches
     Friend WithEvents mnuRefreshMatches As DevExpress.XtraBars.BarButtonItem
     Friend WithEvents bgWorkerRefreshMatches As System.ComponentModel.BackgroundWorker
     Friend WithEvents tmrBgWorker As System.Windows.Forms.Timer
+    Friend WithEvents BarButtonItem3 As DevExpress.XtraBars.BarButtonItem
 End Class

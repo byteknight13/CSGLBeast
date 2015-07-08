@@ -31,4 +31,11 @@
         'End If
     End Sub
 
+    Private Sub cmdSetToDefaults_Click(sender As Object, e As EventArgs) Handles cmdSetToDefaults.Click
+        If MsgBox("Are you sure?", MsgBoxStyle.YesNo, "Are You Sure?") = MsgBoxResult.Yes Then
+            frmMain.DefaultLookAndFeel1.LookAndFeel.SetSkinStyle("Whiteprint")
+            My.Settings.UserSkin = "Whiteprint"
+            My.Settings.Save()
+        End If
+    End Sub
 End Class

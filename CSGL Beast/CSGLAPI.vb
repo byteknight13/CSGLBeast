@@ -214,7 +214,29 @@ Public Class CSGLAPI
             End If
         Next
     End Sub
+
+    Public Function GetRowIDByMatchIDInDataTable(ByVal dt As DataTable, ByVal ID As String) As Integer
+        For i = 0 To dt.Rows.Count - 1
+            If dt.Rows.Item(i).Item(0).ToString.Trim = ID.Trim Then Return i
+        Next
+        Return -1
+    End Function
+
+    Public Function GetRowIDByMatchIDInGridView(ByVal ID As String) As Integer
+        LogMe(String.Format("Searching {0} rows...", frmMatches.gviewMatches.DataRowCount))
+        For i = 0 To frmMatches.gviewMatches.RowCount - 1
+            'Dim rowhandle As Integer = frmMatches.gviewMatches.GetRowHandle(i)
+            LogMe(frmMatches.gviewMatches.GetRowCellValue(i, "MatchID").ToString)
+            If frmMatches.gviewMatches.GetRowCellValue(i, "MatchID").ToString = ID Then
+                LogMe(String.Format("{0} was found at {1}", ID, i))
+                Return i
+            End If
+        Next
+        LogMe("Nothing Found!")
+        Return -1
+    End Function
 End Class
+
 
 Public Class InventoryItems
     Public Property Name As String

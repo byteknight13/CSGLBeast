@@ -83,42 +83,89 @@ Public Class frmMatches
 
 
     Private Sub bgWorkerRefreshMatches_DoWork(sender As Object, e As System.ComponentModel.DoWorkEventArgs) Handles bgWorkerRefreshMatches.DoWork
-        Dim CSGLAPI As New CSGLAPI
-        Dim dt As New DataTable
-        threadDatatable = CSGLAPI.JSONToDataTable(CSGLAPI.urlMatchList, False)
-        If threadDatatable IsNot Nothing Then
-            For Each row As DataRow In threadDatatable.Rows
-                threadRowList.Add(row)
-            Next
-            Dim listofIDs As New List(Of String)
-            For i = 0 To gviewMatches.RowCount - 1
-                listofIDs.Add(gviewMatches.GetRowCellValue(i, gviewMatches.Columns("MatchID")).ToString)
-            Next
-            listofIDs = listofIDs.Distinct.ToList
-            LogMe(String.Format("Current ID count: {0}", listofIDs.Count))
-            For Each row As DataRow In threadRowList
-                Dim id As Integer = listofIDs.IndexOf(row.Item(0).ToString)
-                If id >= 0 Then
-                    Continue For
-                Else
-                    'LogMe(String.Format("Found new match! - Match ID: {0}", row.Item(0)))
-                    AddNewRow()
-                    gviewMatches.SelectRow(gviewMatches.RowCount - 1)
-                    Dim newRowHandle As Integer = gviewMatches.GetSelectedRows(0)
-                    LogMe(String.Format("{0} is the new row handle.", newRowHandle.ToString))
-                    Dim newRow As Object = gviewMatches.GetRow(newRowHandle)
-                    For i = 0 To gviewMatches.Columns.Count - 1
-                        'SetRowCellValue(newRowHandle, i, "YOMOMMA")
-                        SetRowCellValue(newRowHandle, i, row.Item(i).ToString)
-                        If gviewMatches.GetRowCellValue(i, "Winner").ToString = "Team 1" Then SetRowCellValue(i, 4, gviewMatches.GetRowCellValue(i, "Team1").ToString)
-                        If gviewMatches.GetRowCellValue(i, "Winner").ToString = "Team 2" Then SetRowCellValue(i, 4, gviewMatches.GetRowCellValue(i, "Team2").ToString)
-                    Next
-                End If
-            Next
-            My.Settings.LastRefresh = Date.Now
-        ElseIf threadDatatable Is Nothing Then
-            LogMe("threadDatatable = NOTHING")
-        End If
+        Try
+            Dim CSGLAPI As New CSGLAPI
+            Dim dt As New DataTable
+            threadDatatable = CSGLAPI.JSONToDataTable(CSGLAPI.urlMatchList, False)
+            If threadDatatable IsNot Nothing Then
+                For Each row As DataRow In threadDatatable.Rows
+                    threadRowList.Add(row)
+                Next
+                Dim ListOfCurrentIDs As New List(Of String)
+                Dim ListOfOpenMatches As New List(Of String)
+                LogMe("Checking to see if old matches need closing...")
+                For i = 0 To gviewMatches.RowCount - 1
+                    ListOfCurrentIDs.Add(gviewMatches.GetRowCellValue(i, gviewMatches.Columns("MatchID")).ToString)
+                    Dim IsItOpen As String = gviewMatches.GetRowCellValue(i, "Closed").ToString.ToUpper
+                    If IsItOpen = "FALSE" Then
+                        ListOfOpenMatches.Add(gviewMatches.GetRowCellValue(i, gviewMatches.Columns("MatchID")).ToString)
+                        LogMe(String.Format("Adding {0} to the list", gviewMatches.GetRowCellValue(i, "MatchID").ToString))
+                    End If
+                Next
+                LogMe(String.Format("{0} rows in threadDatatable", threadDatatable.Rows.Count))
+                LogMe(String.Format("{0} matches need to be checked...", ListOfOpenMatches.Count))
+                For i = 0 To ListOfOpenMatches.Count - 1 'Get all of the matches that are open so we may modify them if necessary
+                    Dim curID As String = ListOfOpenMatches.Item(i).ToString.Trim
+                    LogMe(String.Format("Checking ID: {0}", ListOfOpenMatches(i)))
+                    Dim DataTableRowID As Integer = CSGLAPI.GetRowIDByMatchIDInDataTable(threadDatatable, curID)
+                    Dim GridViewRowID As Integer = GetRowIDByMatchIDInGridViewLOCAL(curID)
+                    If DataTableRowID <> -1 AndAlso GridViewRowID <> -1 Then
+                        LogMe(String.Format("Row IDs:     DT: {0} -- GV: {1}", DataTableRowID, GridViewRowID))
+                        Dim DataTableValue As String = threadDatatable.Rows(DataTableRowID).Item(5).ToString.ToUpper.Trim
+                        Dim GridViewValue As String = gviewMatches.GetRowCellValue(GridViewRowID, "Closed").ToString.ToUpper.Trim
+                        'LogMe(String.Format("DT Value: {0} -- GV Value: {1}", DataTableValue, GridViewValue))
+                        If DataTableValue.ToUpper = "TRUE" AndAlso GridViewValue.ToUpper = "FALSE" Then
+                            LogMe(String.Format("Making GV (ID: {0}) Match DT (ID: {1})", GridViewValue, DataTableValue))
+                            SetRowCellValue(GridViewRowID, 5, CBool(DataTableValue))
+                        End If
+                    End If
+
+
+
+                    'If gviewMatches.GetRowCellValue(i, "Closed").ToString = "False" Then
+                    '    Dim match_id_thats_closed As String = gviewMatches.GetRowCellValue(i, gviewMatches.Columns("MatchID")).ToString
+                    '    Dim match_id_closed_status As String = gviewMatches.GetRowCellValue(i, gviewMatches.Columns("Closed")).ToString
+                    '    LogMe(String.Format("ID: {0} : Status: {1} -- Checking threadDatatable", match_id_thats_closed, match_id_closed_status))
+                    '    'LogMe(String.Format("{0} is OPEN on GView. Checking threadDatatable", match_id_thats_closed))
+                    '    LogMe(threadDatatable.Rows.Item(i).Item(5).ToString)
+                    '    If threadDatatable.Rows.Item(i).Item(5).ToString.ToUpper.Trim = "TRUE" Then 'If new data shows closed and the gview doesnt, fix it.
+                    '        LogMe("GView needs changing. Changing now.")
+                    '        SetRowCellValue(gviewMatches.GetRowHandle(i), 5, True)
+                    '    End If
+                    'End If
+
+                Next
+
+                ListOfCurrentIDs = ListOfCurrentIDs.Distinct.ToList
+                LogMe(String.Format("Current ID count: {0}", ListOfCurrentIDs.Count))
+                For Each row As DataRow In threadRowList
+                    Dim id As Integer = ListOfCurrentIDs.IndexOf(row.Item(0).ToString)
+                    If id >= 0 Then
+                        Continue For
+                    Else
+                        'LogMe(String.Format("Found new match! - Match ID: {0}", row.Item(0)))
+                        AddNewRow()
+                        gviewMatches.SelectRow(gviewMatches.RowCount - 1)
+                        Dim newRowHandle As Integer = gviewMatches.GetSelectedRows(0)
+                        'LogMe(String.Format("{0} is the new row handle.", newRowHandle.ToString))
+                        'Dim newRow As Object = gviewMatches.GetRow(newRowHandle)
+                        For i = 0 To gviewMatches.Columns.Count - 1
+                            SetRowCellValue(newRowHandle, i, row.Item(i).ToString)
+                            If gviewMatches.GetRowCellValue(i, "Winner").ToString = "Team 1" Then SetRowCellValue(i, 4, gviewMatches.GetRowCellValue(i, "Team1").ToString)
+                            If gviewMatches.GetRowCellValue(i, "Winner").ToString = "Team 2" Then SetRowCellValue(i, 4, gviewMatches.GetRowCellValue(i, "Team2").ToString)
+                        Next
+                    End If
+                Next
+                My.Settings.LastRefresh = Date.Now
+            ElseIf threadDatatable Is Nothing Then
+                LogMe("threadDatatable = NOTHING")
+            End If
+        Catch ex As Exception
+            LogMe(ex.Message)
+            LogMe("----------")
+            LogMe(ex.ToString)
+            LogMe("----------")
+        End Try
     End Sub
 
     Private Sub bgWorkerRefreshMatches_RunWorkerCompleted(sender As Object, e As System.ComponentModel.RunWorkerCompletedEventArgs) Handles bgWorkerRefreshMatches.RunWorkerCompleted
@@ -136,6 +183,7 @@ Public Class frmMatches
     End Sub
 
     Private Sub mnuRefreshMatches_ItemClick(sender As Object, e As DevExpress.XtraBars.ItemClickEventArgs) Handles mnuRefreshMatches.ItemClick
+        gviewMatches.Columns("MatchID").SortOrder = DevExpress.Data.ColumnSortOrder.Ascending
         tmrBgWorker.Enabled = True
         bgWorkerRefreshMatches.RunWorkerAsync()
     End Sub
@@ -151,8 +199,8 @@ Public Class frmMatches
         End If
     End Function
 
-    Private Delegate Sub SetRowCellValueDelegate(ByVal rowhandle As Integer, ByVal col As Integer, ByVal theVal As String)
-    Private Sub SetRowCellValue(ByVal rowhandle As Integer, ByVal col As Integer, ByVal theVal As String)
+    Private Delegate Sub SetRowCellValueDelegate(ByVal rowhandle As Integer, ByVal col As Integer, ByVal theVal As Object)
+    Private Sub SetRowCellValue(ByVal rowhandle As Integer, ByVal col As Integer, ByVal theVal As Object)
         If Me.InvokeRequired Then
             Dim del As New SetRowCellValueDelegate(AddressOf SetRowCellValue)
             Me.Invoke(del, New Object() {rowhandle, col, theVal})
@@ -163,6 +211,17 @@ Public Class frmMatches
         End If
     End Sub
 
+    Private Delegate Function GetRowCellValueDelegate(ByVal rowhandle As Integer, ByVal col As String) As String
+    Private Function GetRowCellValue(ByVal rowhandle As Integer, ByVal col As String) As String
+        If Me.InvokeRequired Then
+            Dim del As New GetRowCellValueDelegate(AddressOf GetRowCellValue)
+            Me.Invoke(del, New Object() {rowhandle, col})
+        Else
+            Dim ReturnMe As String = gviewMatches.GetRowCellDisplayText(rowhandle, col).ToString
+            Return ReturnMe
+        End If
+    End Function
+
     Public Sub InvalidRowExceptionHandler(ByVal sender As Object, ByVal e As DevExpress.XtraGrid.Views.Base.InvalidRowExceptionEventArgs) Handles gviewMatches.InvalidRowException
         'e.ExceptionMode = DevExpress.XtraEditors.Controls.ExceptionMode.Ignore
         LogMe(e.Exception.Data.ToString)
@@ -172,7 +231,24 @@ Public Class frmMatches
         e.Valid = True
     End Sub
 
-    Private Sub LookUpTeamTwo_ItemClick(sender As Object, e As DevExpress.XtraBars.ItemClickEventArgs) Handles LookUpTeamTwo.ItemClick
-
+    Private Sub BarButtonItem3_ItemClick(sender As Object, e As DevExpress.XtraBars.ItemClickEventArgs) Handles BarButtonItem3.ItemClick
+        'TESTING METHOD! DELETE ME!
+        MsgBox(gviewMatches.GetRowCellValue(0, "Closed").ToString)
     End Sub
+
+    Public Function GetRowIDByMatchIDInGridViewLOCAL(ByVal theID As String) As Integer
+        'LogMe(String.Format("Searching {0} rows...", gviewMatches.RowCount))
+        'LogMe("GView Row Count: " & gviewMatches.RowCount)
+        For i = 0 To gviewMatches.RowCount - 1
+            'If i >= 4200 Then LogMe(GetRowCellValue(i, col).ToString)
+            Dim curVal As String = gviewMatches.GetRowCellDisplayText(i, "MatchID") 'GetRowCellValue(i, "MatchID")
+            If curVal = theID Then
+                LogMe(String.Format("ID from on row: {0}", i))
+                'LogMe(String.Format("{0} was found at {1}", ID, i))
+                Return i
+            End If
+        Next
+        LogMe("Nothing Found!")
+        Return -1
+    End Function
 End Class

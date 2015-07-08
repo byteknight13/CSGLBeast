@@ -23,7 +23,7 @@
     <AssemblyVersionSettings>None.IncrementOnDemandWithReset.Increment.None</AssemblyVersionSettings>
     <AssemblyFileVersionSettings>None.IncrementOnDemandWithReset.Increment.None</AssemblyFileVersionSettings>
     <AssemblyInfoVersionSettings>None.IncrementOnDemandWithReset.Increment.None</AssemblyInfoVersionSettings>
-    <AssemblyVersion>0.6.29</AssemblyVersion>
+    <AssemblyVersion>0.6.77</AssemblyVersion>
     <AssemblyInfoFilePath>
     </AssemblyInfoFilePath>
     <PublishUrl>U:\DStokes Releases\CSGLBeast\</PublishUrl>
@@ -138,8 +138,12 @@
     <Reference Include="System.Core">
       <Private>True</Private>
     </Reference>
-    <Reference Include="System.Net" />
-    <Reference Include="System.Web.Extensions" />
+    <Reference Include="System.Net">
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Web.Extensions">
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System.Xml.Linq">
       <Private>True</Private>
     </Reference>
