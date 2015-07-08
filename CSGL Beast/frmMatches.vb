@@ -30,6 +30,7 @@ Public Class frmMatches
     Private Sub frmMatches_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         Me.WindowState = FormWindowState.Normal
         frmMain.WindowState = FormWindowState.Minimized
+        tmrSetFilterTeamList.Enabled = True
     End Sub
 
     Private Sub BarButtonItem1_ItemClick(sender As Object, e As DevExpress.XtraBars.ItemClickEventArgs) Handles BarButtonItem1.ItemClick
@@ -84,6 +85,7 @@ Public Class frmMatches
 
     Private Sub bgWorkerRefreshMatches_DoWork(sender As Object, e As System.ComponentModel.DoWorkEventArgs) Handles bgWorkerRefreshMatches.DoWork
         Try
+            Dim start_time As DateTime = DateTime.Now
             Dim CSGLAPI As New CSGLAPI
             Dim dt As New DataTable
             threadDatatable = CSGLAPI.JSONToDataTable(CSGLAPI.urlMatchList, False)
@@ -119,21 +121,6 @@ Public Class frmMatches
                             SetRowCellValue(GridViewRowID, 5, CBool(DataTableValue))
                         End If
                     End If
-
-
-
-                    'If gviewMatches.GetRowCellValue(i, "Closed").ToString = "False" Then
-                    '    Dim match_id_thats_closed As String = gviewMatches.GetRowCellValue(i, gviewMatches.Columns("MatchID")).ToString
-                    '    Dim match_id_closed_status As String = gviewMatches.GetRowCellValue(i, gviewMatches.Columns("Closed")).ToString
-                    '    LogMe(String.Format("ID: {0} : Status: {1} -- Checking threadDatatable", match_id_thats_closed, match_id_closed_status))
-                    '    'LogMe(String.Format("{0} is OPEN on GView. Checking threadDatatable", match_id_thats_closed))
-                    '    LogMe(threadDatatable.Rows.Item(i).Item(5).ToString)
-                    '    If threadDatatable.Rows.Item(i).Item(5).ToString.ToUpper.Trim = "TRUE" Then 'If new data shows closed and the gview doesnt, fix it.
-                    '        LogMe("GView needs changing. Changing now.")
-                    '        SetRowCellValue(gviewMatches.GetRowHandle(i), 5, True)
-                    '    End If
-                    'End If
-
                 Next
 
                 ListOfCurrentIDs = ListOfCurrentIDs.Distinct.ToList
@@ -149,18 +136,24 @@ Public Class frmMatches
                         Dim newRowHandle As Integer = gviewMatches.GetSelectedRows(0)
                         'LogMe(String.Format("{0} is the new row handle.", newRowHandle.ToString))
                         'Dim newRow As Object = gviewMatches.GetRow(newRowHandle)
-                        For i = 0 To gviewMatches.Columns.Count - 1
+                        For i = 0 To gviewMatches.RowCount - 1
                             SetRowCellValue(newRowHandle, i, row.Item(i).ToString)
-                            If gviewMatches.GetRowCellValue(i, "Winner").ToString = "Team 1" Then SetRowCellValue(i, 4, gviewMatches.GetRowCellValue(i, "Team1").ToString)
-                            If gviewMatches.GetRowCellValue(i, "Winner").ToString = "Team 2" Then SetRowCellValue(i, 4, gviewMatches.GetRowCellValue(i, "Team2").ToString)
+                            If gviewMatches.GetRowCellDisplayText(i, "Winner").ToString = "Team 1" Then SetRowCellValue(i, 4, gviewMatches.GetRowCellValue(i, "Team1").ToString)
+                            If gviewMatches.GetRowCellDisplayText(i, "Winner").ToString = "Team 2" Then SetRowCellValue(i, 4, gviewMatches.GetRowCellValue(i, "Team2").ToString)
                         Next
                     End If
                 Next
                 My.Settings.LastRefresh = Date.Now
+                Dim end_time As DateTime = DateTime.Now
+                Dim elapsed_time As TimeSpan = end_time - start_time
+                LogMe(String.Format("Operation took {0}", elapsed_time.ToString))
             ElseIf threadDatatable Is Nothing Then
                 LogMe("threadDatatable = NOTHING")
             End If
         Catch ex As Exception
+            MsgBox("There was a small error processing the closed matches. " & _
+                "Please try again. Sometimes CSGL doesn't like the HTTP requests." & _
+                "It will work, it just sometimes takes a few tries.", MsgBoxStyle.OkOnly, "ERROR OCCURRED")
             LogMe(ex.Message)
             LogMe("----------")
             LogMe(ex.ToString)
@@ -184,6 +177,7 @@ Public Class frmMatches
 
     Private Sub mnuRefreshMatches_ItemClick(sender As Object, e As DevExpress.XtraBars.ItemClickEventArgs) Handles mnuRefreshMatches.ItemClick
         gviewMatches.Columns("MatchID").SortOrder = DevExpress.Data.ColumnSortOrder.Ascending
+        SetTeamListsForFilter()
         tmrBgWorker.Enabled = True
         bgWorkerRefreshMatches.RunWorkerAsync()
     End Sub
@@ -231,11 +225,6 @@ Public Class frmMatches
         e.Valid = True
     End Sub
 
-    Private Sub BarButtonItem3_ItemClick(sender As Object, e As DevExpress.XtraBars.ItemClickEventArgs) Handles BarButtonItem3.ItemClick
-        'TESTING METHOD! DELETE ME!
-        MsgBox(gviewMatches.GetRowCellValue(0, "Closed").ToString)
-    End Sub
-
     Public Function GetRowIDByMatchIDInGridViewLOCAL(ByVal theID As String) As Integer
         'LogMe(String.Format("Searching {0} rows...", gviewMatches.RowCount))
         'LogMe("GView Row Count: " & gviewMatches.RowCount)
@@ -251,4 +240,33 @@ Public Class frmMatches
         LogMe("Nothing Found!")
         Return -1
     End Function
+
+    Private Sub SetTeamListsForFilter()
+        LogMe("Setting team filter lists...")
+        Dim starttime As DateTime = Date.Now
+
+
+        Dim lstTeams As New List(Of String)
+        For i = 0 To gviewMatches.RowCount - 1
+            lstTeams.Add(gviewMatches.GetRowCellValue(i, "Team1").ToString)
+            lstTeams.Add(gviewMatches.GetRowCellValue(i, "Team2").ToString)
+        Next
+        lstTeams = lstTeams.Distinct.ToList()
+        lstTeams.Sort()
+        lstTeams.Remove(lstTeams.Item(0))
+        reposTeamOne.DataSource = lstTeams
+        reposTeamTwo.DataSource = lstTeams
+        Dim endtime As DateTime = DateTime.Now
+        Dim elapsed As TimeSpan = endtime - starttime
+        LogMe(String.Format("Operation took {0}", elapsed.ToString))
+    End Sub
+
+    Private Sub tmrSetFilterTeamList_Tick(sender As Object, e As EventArgs) Handles tmrSetFilterTeamList.Tick
+        SetTeamListsForFilter()
+        tmrSetFilterTeamList.Enabled = False
+    End Sub
+
+    Private Sub LookUpTeamTwo_ItemClick(sender As Object, e As DevExpress.XtraBars.ItemClickEventArgs) Handles LookUpTeamTwo.ItemClick
+
+    End Sub
 End Class

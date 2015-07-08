@@ -19,9 +19,10 @@ Partial Class frmMatches
     'Do not modify it using the code editor.
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
+        Me.components = New System.ComponentModel.Container()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(frmMatches))
         Me.GridControl1 = New DevExpress.XtraGrid.GridControl()
-        Me.BindingSource1 = New System.Windows.Forms.BindingSource()
+        Me.BindingSource1 = New System.Windows.Forms.BindingSource(Me.components)
         Me.DbCSGLDataSet1 = New CSGL_Beast.dbCSGLDataSet()
         Me.gviewMatches = New DevExpress.XtraGrid.Views.Grid.GridView()
         Me.colMatchID = New DevExpress.XtraGrid.Columns.GridColumn()
@@ -34,10 +35,10 @@ Partial Class frmMatches
         Me.colBestOf = New DevExpress.XtraGrid.Columns.GridColumn()
         Me.LayoutView1 = New DevExpress.XtraGrid.Views.Layout.LayoutView()
         Me.TblMatchesTableAdapter1 = New CSGL_Beast.dbCSGLDataSetTableAdapters.tblMatchesTableAdapter()
-        Me.BarManager1 = New DevExpress.XtraBars.BarManager()
+        Me.BarManager1 = New DevExpress.XtraBars.BarManager(Me.components)
         Me.Bar1 = New DevExpress.XtraBars.Bar()
         Me.BarHeaderItem1 = New DevExpress.XtraBars.BarHeaderItem()
-        Me.LoogUpTeamOne = New DevExpress.XtraBars.BarEditItem()
+        Me.LookUpTeamOne = New DevExpress.XtraBars.BarEditItem()
         Me.reposTeamOne = New DevExpress.XtraEditors.Repository.RepositoryItemLookUpEdit()
         Me.LookUpTeamTwo = New DevExpress.XtraBars.BarEditItem()
         Me.reposTeamTwo = New DevExpress.XtraEditors.Repository.RepositoryItemLookUpEdit()
@@ -50,7 +51,6 @@ Partial Class frmMatches
         Me.mnuFilterBest3 = New DevExpress.XtraBars.BarCheckItem()
         Me.d = New DevExpress.XtraBars.BarSubItem()
         Me.BarLargeButtonItem1 = New DevExpress.XtraBars.BarLargeButtonItem()
-        Me.BarButtonItem3 = New DevExpress.XtraBars.BarButtonItem()
         Me.Bar2 = New DevExpress.XtraBars.Bar()
         Me.BarSubItem4 = New DevExpress.XtraBars.BarSubItem()
         Me.mnuCheckShowFind = New DevExpress.XtraBars.BarCheckItem()
@@ -65,8 +65,11 @@ Partial Class frmMatches
         Me.RepositoryItemDateEdit1 = New DevExpress.XtraEditors.Repository.RepositoryItemDateEdit()
         Me.BarSubItem3 = New DevExpress.XtraBars.BarSubItem()
         Me.mnuCheckAutoFilter = New DevExpress.XtraBars.BarCheckItem()
+        Me.BarButtonItem3 = New DevExpress.XtraBars.BarButtonItem()
         Me.bgWorkerRefreshMatches = New System.ComponentModel.BackgroundWorker()
-        Me.tmrBgWorker = New System.Windows.Forms.Timer()
+        Me.tmrBgWorker = New System.Windows.Forms.Timer(Me.components)
+        Me.tmrSetFilterTeamList = New System.Windows.Forms.Timer(Me.components)
+        Me.lblStatus = New DevExpress.XtraBars.BarStaticItem()
         CType(Me.GridControl1, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.BindingSource1, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.DbCSGLDataSet1, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -86,9 +89,10 @@ Partial Class frmMatches
         Me.GridControl1.DataSource = Me.BindingSource1
         Me.GridControl1.Dock = System.Windows.Forms.DockStyle.Fill
         Me.GridControl1.Location = New System.Drawing.Point(0, 60)
+        Me.GridControl1.LookAndFeel.SkinName = "Metropolis Dark"
         Me.GridControl1.MainView = Me.gviewMatches
         Me.GridControl1.Name = "GridControl1"
-        Me.GridControl1.Size = New System.Drawing.Size(948, 406)
+        Me.GridControl1.Size = New System.Drawing.Size(948, 401)
         Me.GridControl1.TabIndex = 0
         Me.GridControl1.ViewCollection.AddRange(New DevExpress.XtraGrid.Views.Base.BaseView() {Me.gviewMatches, Me.LayoutView1})
         '
@@ -183,6 +187,7 @@ Partial Class frmMatches
         '
         Me.colClosed.FieldName = "Closed"
         Me.colClosed.Name = "colClosed"
+        Me.colClosed.OptionsColumn.AllowEdit = False
         Me.colClosed.Visible = True
         Me.colClosed.VisibleIndex = 6
         '
@@ -220,9 +225,9 @@ Partial Class frmMatches
         Me.BarManager1.DockControls.Add(Me.barDockControlLeft)
         Me.BarManager1.DockControls.Add(Me.barDockControlRight)
         Me.BarManager1.Form = Me
-        Me.BarManager1.Items.AddRange(New DevExpress.XtraBars.BarItem() {Me.BarButtonItem1, Me.BarButtonItem2, Me.LoogUpTeamOne, Me.LookUpTeamTwo, Me.BarHeaderItem1, Me.mnuClearFilter, Me.BarSubItem1, Me.mnuFilterBest1, Me.mnuFilterBest2, Me.mnuFilterBest3, Me.BarSubItem2, Me.d, Me.mnuDateRange, Me.BarSubItem3, Me.BarLargeButtonItem1, Me.BarSubItem4, Me.mnuCheckShowFind, Me.mnuCheckAutoFilter, Me.mnuRefreshMatches, Me.BarButtonItem3})
+        Me.BarManager1.Items.AddRange(New DevExpress.XtraBars.BarItem() {Me.BarButtonItem1, Me.BarButtonItem2, Me.LookUpTeamOne, Me.LookUpTeamTwo, Me.BarHeaderItem1, Me.mnuClearFilter, Me.BarSubItem1, Me.mnuFilterBest1, Me.mnuFilterBest2, Me.mnuFilterBest3, Me.BarSubItem2, Me.d, Me.mnuDateRange, Me.BarSubItem3, Me.BarLargeButtonItem1, Me.BarSubItem4, Me.mnuCheckShowFind, Me.mnuCheckAutoFilter, Me.mnuRefreshMatches, Me.BarButtonItem3, Me.lblStatus})
         Me.BarManager1.MainMenu = Me.Bar2
-        Me.BarManager1.MaxItemId = 21
+        Me.BarManager1.MaxItemId = 22
         Me.BarManager1.RepositoryItems.AddRange(New DevExpress.XtraEditors.Repository.RepositoryItem() {Me.reposTeamOne, Me.reposTeamTwo, Me.RepositoryItemDateEdit1})
         Me.BarManager1.StatusBar = Me.Bar3
         '
@@ -232,7 +237,8 @@ Partial Class frmMatches
         Me.Bar1.DockCol = 0
         Me.Bar1.DockRow = 1
         Me.Bar1.DockStyle = DevExpress.XtraBars.BarDockStyle.Top
-        Me.Bar1.LinksPersistInfo.AddRange(New DevExpress.XtraBars.LinkPersistInfo() {New DevExpress.XtraBars.LinkPersistInfo(Me.BarHeaderItem1), New DevExpress.XtraBars.LinkPersistInfo(DevExpress.XtraBars.BarLinkUserDefines.PaintStyle, Me.LoogUpTeamOne, DevExpress.XtraBars.BarItemPaintStyle.CaptionGlyph), New DevExpress.XtraBars.LinkPersistInfo(DevExpress.XtraBars.BarLinkUserDefines.PaintStyle, Me.LookUpTeamTwo, DevExpress.XtraBars.BarItemPaintStyle.CaptionGlyph), New DevExpress.XtraBars.LinkPersistInfo(DevExpress.XtraBars.BarLinkUserDefines.PaintStyle, Me.BarButtonItem1, "", True, True, True, 0, Nothing, DevExpress.XtraBars.BarItemPaintStyle.CaptionGlyph), New DevExpress.XtraBars.LinkPersistInfo(DevExpress.XtraBars.BarLinkUserDefines.PaintStyle, Me.mnuClearFilter, DevExpress.XtraBars.BarItemPaintStyle.CaptionGlyph), New DevExpress.XtraBars.LinkPersistInfo(DevExpress.XtraBars.BarLinkUserDefines.PaintStyle, Me.BarSubItem1, DevExpress.XtraBars.BarItemPaintStyle.CaptionGlyph), New DevExpress.XtraBars.LinkPersistInfo(Me.BarButtonItem3)})
+        Me.Bar1.LinksPersistInfo.AddRange(New DevExpress.XtraBars.LinkPersistInfo() {New DevExpress.XtraBars.LinkPersistInfo(Me.BarHeaderItem1), New DevExpress.XtraBars.LinkPersistInfo(DevExpress.XtraBars.BarLinkUserDefines.PaintStyle, Me.LookUpTeamOne, DevExpress.XtraBars.BarItemPaintStyle.CaptionGlyph), New DevExpress.XtraBars.LinkPersistInfo(DevExpress.XtraBars.BarLinkUserDefines.PaintStyle, Me.LookUpTeamTwo, DevExpress.XtraBars.BarItemPaintStyle.CaptionGlyph), New DevExpress.XtraBars.LinkPersistInfo(DevExpress.XtraBars.BarLinkUserDefines.PaintStyle, Me.BarButtonItem1, "", True, True, True, 0, Nothing, DevExpress.XtraBars.BarItemPaintStyle.CaptionGlyph), New DevExpress.XtraBars.LinkPersistInfo(DevExpress.XtraBars.BarLinkUserDefines.PaintStyle, Me.mnuClearFilter, DevExpress.XtraBars.BarItemPaintStyle.CaptionGlyph), New DevExpress.XtraBars.LinkPersistInfo(DevExpress.XtraBars.BarLinkUserDefines.PaintStyle, Me.BarSubItem1, DevExpress.XtraBars.BarItemPaintStyle.CaptionGlyph)})
+        Me.Bar1.OptionsBar.UseWholeRow = True
         Me.Bar1.Text = "Tools"
         '
         'BarHeaderItem1
@@ -241,19 +247,21 @@ Partial Class frmMatches
         Me.BarHeaderItem1.Id = 4
         Me.BarHeaderItem1.Name = "BarHeaderItem1"
         '
-        'LoogUpTeamOne
+        'LookUpTeamOne
         '
-        Me.LoogUpTeamOne.Caption = "Team:"
-        Me.LoogUpTeamOne.Edit = Me.reposTeamOne
-        Me.LoogUpTeamOne.Id = 2
-        Me.LoogUpTeamOne.Name = "LoogUpTeamOne"
-        Me.LoogUpTeamOne.Width = 120
+        Me.LookUpTeamOne.Caption = "Team:"
+        Me.LookUpTeamOne.Edit = Me.reposTeamOne
+        Me.LookUpTeamOne.Id = 2
+        Me.LookUpTeamOne.Name = "LookUpTeamOne"
+        Me.LookUpTeamOne.Width = 120
         '
         'reposTeamOne
         '
         Me.reposTeamOne.AutoHeight = False
         Me.reposTeamOne.Buttons.AddRange(New DevExpress.XtraEditors.Controls.EditorButton() {New DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)})
+        Me.reposTeamOne.DropDownRows = 10
         Me.reposTeamOne.Name = "reposTeamOne"
+        Me.reposTeamOne.NullText = "[SELECT A TEAM]"
         '
         'LookUpTeamTwo
         '
@@ -267,7 +275,9 @@ Partial Class frmMatches
         '
         Me.reposTeamTwo.AutoHeight = False
         Me.reposTeamTwo.Buttons.AddRange(New DevExpress.XtraEditors.Controls.EditorButton() {New DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)})
+        Me.reposTeamTwo.DropDownRows = 10
         Me.reposTeamTwo.Name = "reposTeamTwo"
+        Me.reposTeamTwo.NullText = "[SELECT A TEAM]"
         '
         'BarButtonItem1
         '
@@ -331,12 +341,6 @@ Partial Class frmMatches
         Me.BarLargeButtonItem1.Id = 15
         Me.BarLargeButtonItem1.Name = "BarLargeButtonItem1"
         '
-        'BarButtonItem3
-        '
-        Me.BarButtonItem3.Caption = "BarButtonItem3"
-        Me.BarButtonItem3.Id = 20
-        Me.BarButtonItem3.Name = "BarButtonItem3"
-        '
         'Bar2
         '
         Me.Bar2.BarName = "Main menu"
@@ -374,6 +378,7 @@ Partial Class frmMatches
         Me.Bar3.DockCol = 0
         Me.Bar3.DockRow = 0
         Me.Bar3.DockStyle = DevExpress.XtraBars.BarDockStyle.Bottom
+        Me.Bar3.LinksPersistInfo.AddRange(New DevExpress.XtraBars.LinkPersistInfo() {New DevExpress.XtraBars.LinkPersistInfo(Me.lblStatus)})
         Me.Bar3.OptionsBar.AllowQuickCustomization = False
         Me.Bar3.OptionsBar.DrawDragBorder = False
         Me.Bar3.OptionsBar.UseWholeRow = True
@@ -390,22 +395,22 @@ Partial Class frmMatches
         '
         Me.barDockControlBottom.CausesValidation = False
         Me.barDockControlBottom.Dock = System.Windows.Forms.DockStyle.Bottom
-        Me.barDockControlBottom.Location = New System.Drawing.Point(0, 466)
-        Me.barDockControlBottom.Size = New System.Drawing.Size(948, 23)
+        Me.barDockControlBottom.Location = New System.Drawing.Point(0, 461)
+        Me.barDockControlBottom.Size = New System.Drawing.Size(948, 28)
         '
         'barDockControlLeft
         '
         Me.barDockControlLeft.CausesValidation = False
         Me.barDockControlLeft.Dock = System.Windows.Forms.DockStyle.Left
         Me.barDockControlLeft.Location = New System.Drawing.Point(0, 60)
-        Me.barDockControlLeft.Size = New System.Drawing.Size(0, 406)
+        Me.barDockControlLeft.Size = New System.Drawing.Size(0, 401)
         '
         'barDockControlRight
         '
         Me.barDockControlRight.CausesValidation = False
         Me.barDockControlRight.Dock = System.Windows.Forms.DockStyle.Right
         Me.barDockControlRight.Location = New System.Drawing.Point(948, 60)
-        Me.barDockControlRight.Size = New System.Drawing.Size(0, 406)
+        Me.barDockControlRight.Size = New System.Drawing.Size(0, 401)
         '
         'BarButtonItem2
         '
@@ -441,6 +446,12 @@ Partial Class frmMatches
         Me.mnuCheckAutoFilter.Id = 18
         Me.mnuCheckAutoFilter.Name = "mnuCheckAutoFilter"
         '
+        'BarButtonItem3
+        '
+        Me.BarButtonItem3.Caption = "BarButtonItem3"
+        Me.BarButtonItem3.Id = 20
+        Me.BarButtonItem3.Name = "BarButtonItem3"
+        '
         'bgWorkerRefreshMatches
         '
         Me.bgWorkerRefreshMatches.WorkerReportsProgress = True
@@ -448,6 +459,16 @@ Partial Class frmMatches
         '
         'tmrBgWorker
         '
+        '
+        'tmrSetFilterTeamList
+        '
+        '
+        'lblStatus
+        '
+        Me.lblStatus.Caption = "Status: "
+        Me.lblStatus.Id = 21
+        Me.lblStatus.Name = "lblStatus"
+        Me.lblStatus.TextAlignment = System.Drawing.StringAlignment.Near
         '
         'frmMatches
         '
@@ -501,7 +522,7 @@ Partial Class frmMatches
     Friend WithEvents barDockControlLeft As DevExpress.XtraBars.BarDockControl
     Friend WithEvents barDockControlRight As DevExpress.XtraBars.BarDockControl
     Friend WithEvents BarHeaderItem1 As DevExpress.XtraBars.BarHeaderItem
-    Friend WithEvents LoogUpTeamOne As DevExpress.XtraBars.BarEditItem
+    Friend WithEvents LookUpTeamOne As DevExpress.XtraBars.BarEditItem
     Friend WithEvents reposTeamOne As DevExpress.XtraEditors.Repository.RepositoryItemLookUpEdit
     Friend WithEvents LookUpTeamTwo As DevExpress.XtraBars.BarEditItem
     Friend WithEvents reposTeamTwo As DevExpress.XtraEditors.Repository.RepositoryItemLookUpEdit
@@ -523,4 +544,6 @@ Partial Class frmMatches
     Friend WithEvents bgWorkerRefreshMatches As System.ComponentModel.BackgroundWorker
     Friend WithEvents tmrBgWorker As System.Windows.Forms.Timer
     Friend WithEvents BarButtonItem3 As DevExpress.XtraBars.BarButtonItem
+    Friend WithEvents tmrSetFilterTeamList As System.Windows.Forms.Timer
+    Friend WithEvents lblStatus As DevExpress.XtraBars.BarStaticItem
 End Class
